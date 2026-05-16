@@ -6,8 +6,6 @@ import {
   DotGrid,
   Stamp,
   CornerCurl,
-  TrailArrow,
-  TrailArrowDown,
 } from "@/components/decorations";
 import { ScrollToTop } from "@/components/scroll-to-top";
 import { cn } from "@/lib/utils";
@@ -73,7 +71,7 @@ const steps = [
     body: "Name, date, time. Done in a minute.",
     accent: "terracotta",
     preview: (
-      <div className="space-y-2">
+      <div className="space-y-4">
         <div className="rounded-md border-2 border-dashed border-rule bg-paper px-2.5 py-1.5">
           <div className="text-[9px] font-display font-bold uppercase tracking-wider text-ink-soft">
             Title
@@ -119,7 +117,7 @@ const steps = [
     body: "One link goes wherever — text, group chat, email.",
     accent: "mustard",
     preview: (
-      <div className="space-y-2.5">
+      <div className="space-y-4">
         <div className="flex items-center gap-2 rounded-md border-2 border-dashed border-rule bg-paper px-2.5 py-1.5">
           <span className="inline-block h-1.5 w-1.5 rounded-full bg-olive" />
           <code className="flex-1 truncate font-mono text-[11px] text-ink-soft">
@@ -157,7 +155,7 @@ const steps = [
     body: "RSVPs roll in. People claim food. Tasks get checked off.",
     accent: "olive",
     preview: (
-      <div className="space-y-2.5">
+      <div className="space-y-4">
         <div className="grid grid-cols-3 gap-2 text-center">
           <div className="rounded-md border-2 border-ink/30 bg-olive/15 p-1.5">
             <div className="font-display text-lg font-bold leading-none text-olive">
@@ -184,7 +182,7 @@ const steps = [
             </div>
           </div>
         </div>
-        <ul className="space-y-1 text-[11px]">
+        <ul className="space-y-2 text-[11px]">
           <li className="flex items-center gap-1.5">
             <span className="inline-flex h-3.5 w-3.5 items-center justify-center rounded-sm border-2 border-olive bg-olive text-[8px] text-paper-light">
               ✓
@@ -471,18 +469,6 @@ export default function HomePage() {
                   <span className="tabular-nums">{s.n}</span>
                 </div>
 
-                <span
-                  className={cn(
-                    "tape rounded-sm",
-                    s.accent === "olive"
-                      ? "tape-olive"
-                      : s.accent === "terracotta"
-                        ? "tape-coral"
-                        : "",
-                  )}
-                  aria-hidden
-                />
-
                 <div className="mt-4">
                   <p className="font-hand text-lg text-terracotta">{s.kicker}</p>
                   <h3 className="font-display text-2xl font-bold tracking-tight">
@@ -514,19 +500,6 @@ export default function HomePage() {
                 </div>
               </article>
 
-              {/* Trail arrow to the next step */}
-              {i < steps.length - 1 && (
-                <>
-                  <TrailArrow
-                    className="pointer-events-none absolute -right-7 top-1/2 hidden h-6 w-14 -translate-y-1/2 text-terracotta md:block"
-                    aria-hidden
-                  />
-                  <TrailArrowDown
-                    className="mx-auto mt-4 h-12 w-5 text-terracotta md:hidden"
-                    aria-hidden
-                  />
-                </>
-              )}
             </li>
           ))}
         </ol>
@@ -579,7 +552,9 @@ export default function HomePage() {
         <div className="mb-10 max-w-2xl">
           <p className="font-hand text-2xl text-terracotta">small wins</p>
           <h2 className="mt-2 font-display text-4xl font-bold tracking-tight md:text-5xl">
-            The kind of stuff you'll say after.
+            The kind of stuff
+            <br />
+            you'll say after.
           </h2>
         </div>
         <div className="grid gap-6 md:grid-cols-3">
