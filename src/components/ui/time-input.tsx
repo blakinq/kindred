@@ -165,8 +165,45 @@ export function TimeInput({
           aria-invalid={invalid || undefined}
           placeholder={placeholder}
           onChange={(e) => {
-            setDisplay(e.target.value);
+            const next = e.target.value;
             if (invalid) setInvalid(false);
+
+            // Deletion: accept whatever the user has now, no reformatting.
+            if (next.length < display.length) {
+              setDisplay(next);
+              return;
+            }
+
+            // Swallow a colon typed right after an auto-inserted one.
+            if (
+              display.endsWith(":") &&
+              next === display + ":"
+            ) {
+              return;
+            }
+
+            // 24h: auto-insert ":" once the user has typed two hour digits.
+            if (format === "24h") {
+              if (/^\d{2}$/.test(next)) {
+                setDisplay(next + ":");
+                return;
+              }
+              setDisplay(next);
+              return;
+            }
+
+            // 12h: hour can be 1-2 digits depending on the first digit.
+            if (/^[2-9]$/.test(next) || /^1[0-2]$/.test(next)) {
+              setDisplay(next + ":");
+              return;
+            }
+            // "13"-"19": first digit was hour 1, second digit starts minutes.
+            if (/^1[3-9]$/.test(next)) {
+              setDisplay(next[0] + ":" + next[1]);
+              return;
+            }
+
+            setDisplay(next);
           }}
           onBlur={commit}
           className={cn(
@@ -254,7 +291,7 @@ export function parseTime(s: string): string | null {
   const trimmed = s.trim();
   if (!trimmed) return null;
 
-  let m = trimmed.match(/^(\d{1,2})(?::(\d{2}))?\s*(am|pm|a|p)\.?$/i);
+  let m = trimmed.match(/^(\d{1,2})(?::(\d{2})?)?\s*(am|pm|a|p)\.?$/i);
   if (m) {
     let h = +m[1];
     const min = m[2] ? +m[2] : 0;

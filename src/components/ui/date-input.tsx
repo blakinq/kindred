@@ -111,8 +111,31 @@ export function DateInput({
           aria-invalid={invalid || undefined}
           placeholder={placeholder}
           onChange={(e) => {
-            setDisplay(e.target.value);
+            const next = e.target.value;
             if (invalid) setInvalid(false);
+
+            // Deletion: accept whatever the user has now, no reformatting.
+            if (next.length < display.length) {
+              setDisplay(next);
+              return;
+            }
+
+            // Swallow a separator typed right after an auto-inserted one.
+            if (
+              display.endsWith("/") &&
+              next.length === display.length + 1 &&
+              /[/\-.]/.test(next[next.length - 1])
+            ) {
+              return;
+            }
+
+            // Auto-insert "/" once the user has completed the day or month.
+            if (/^\d{2}$/.test(next) || /^\d{2}\/\d{2}$/.test(next)) {
+              setDisplay(next + "/");
+              return;
+            }
+
+            setDisplay(next);
           }}
           onBlur={commit}
           className={cn(
