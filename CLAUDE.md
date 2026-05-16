@@ -5,7 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```powershell
-npm install --legacy-peer-deps   # React 19 RC fails strict peer-dep checks; flag is required
+npm install                       # `.npmrc` sets legacy-peer-deps=true for Lenis's optional react peer
 npm run dev                       # Next dev server on http://localhost:3000
 npm run build                     # Production build
 npm run start                     # Run the production build
@@ -104,13 +104,14 @@ Fonts via `next/font/google` in `src/app/layout.tsx`: Bricolage Grotesque (displ
 
 User-facing feedback uses one tiny global store in `src/lib/toast.ts`. Server-action handlers call `toast.success(title, description?)` or `toast.error(title, description?)` after every mutation; the `<Toaster />` mounted in the root layout renders them. Destructive actions go through `ConfirmDialog` in `src/components/ui/confirm-dialog.tsx`.
 
-### React 19 RC quirks
+### Next.js 15 / React 19 quirks
 
-This repo uses the Next.js 15 + React 19 RC pinned versions. Notes:
+This repo is on Next.js 15.5.x + React 19 stable. Notes:
 
 - Form state hook is `useActionState` from `react`, not `useFormState` from `react-dom`.
-- `npm install` requires `--legacy-peer-deps` because the RC version string doesn't satisfy strict semver peer checks from some deps (e.g. Lenis).
+- `npm install` works without flags because `.npmrc` sets `legacy-peer-deps=true` (Lenis declares an optional react peer that the strict resolver tries to satisfy with a separate copy of React, conflicting with the pinned version).
 - `params` and `searchParams` are `Promise<...>` in App Router pages — await them.
+- Client pages using `useSearchParams()` MUST be wrapped in `<Suspense>` (see `/login`) — otherwise static prerender bails to CSR and the build fails. `usePathname()` is exempt.
 
 ### Smooth scroll
 
