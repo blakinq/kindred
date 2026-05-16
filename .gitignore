@@ -1,0 +1,20 @@
+node_modules
+.next
+out
+.env
+.env.local
+.env*.local
+.DS_Store
+*.log
+.vercel
+next-env.d.ts
+.turbo
+
+# editor / build cache
+*.tsbuildinfo
+
+# local screenshots
+vb.png
+
+# personal Claude Code settings
+.claude/settings.local.json
