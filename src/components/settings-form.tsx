@@ -21,7 +21,7 @@ const VISIBILITY_OPTIONS = [
   { value: "public_link", label: "Anyone with the link" },
   {
     value: "link_invited_only",
-    label: "Anyone can view — only invited guests can RSVP",
+    label: "Anyone can view. Only invited guests can RSVP",
   },
 ];
 

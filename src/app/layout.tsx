@@ -26,9 +26,9 @@ const hand = Caveat({
 });
 
 export const metadata: Metadata = {
-  title: "kindred — plan something good",
+  title: "kindred · plan something good",
   description:
-    "A tiny shared workspace for whoever's bringing what — and who's actually coming.",
+    "A tiny shared workspace for whoever's bringing what, and who's actually coming.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

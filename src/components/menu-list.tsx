@@ -397,7 +397,7 @@ export function MenuList({
           <CardContent className="flex flex-col items-center gap-3 p-12 text-center">
             <ChefHat className="h-7 w-7 text-mustard" />
             <p className="text-sm text-ink-soft">
-              No dishes planned yet. Add the first one above — start with the
+              No dishes planned yet. Add the first one above. Start with the
               main and work outward.
             </p>
           </CardContent>

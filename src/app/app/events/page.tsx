@@ -46,7 +46,7 @@ export default async function EventsPage() {
               <Sparkle className="h-8 w-8 text-mustard" />
               <p className="font-display text-xl font-semibold">Nothing yet</p>
               <p className="max-w-sm text-ink-soft">
-                Create your first event — it takes about a minute. Add guests
+                Create your first event. It takes about a minute. Add guests
                 after.
               </p>
               <Button asChild className="mt-2">

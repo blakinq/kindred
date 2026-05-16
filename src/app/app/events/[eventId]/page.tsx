@@ -209,7 +209,7 @@ export default async function DashboardPage({
               )}
               {needsFood && (
                 <Action href={`/app/events/${eventId}/food-supplies`}>
-                  Plan food and supplies — let guests pick what to bring
+                  Plan food and supplies, let guests pick what to bring
                 </Action>
               )}
               {needsTasks && (

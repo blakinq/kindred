@@ -122,7 +122,7 @@ export function PublicFoodClaim({
         </div>
         <p className="mt-2 font-hand text-2xl text-terracotta">
           {unclaimedCount === 0
-            ? "all set — but feel free to surprise us"
+            ? "all set, but feel free to surprise us"
             : `${unclaimedCount} thing${unclaimedCount === 1 ? "" : "s"} still need a buddy`}
         </p>
         <p className="mt-1 text-sm text-ink-soft">

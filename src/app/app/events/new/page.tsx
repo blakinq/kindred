@@ -258,7 +258,7 @@ export default function NewEventPage() {
                     {
                       value: "link_invited_only",
                       title: "Invite-only RSVP",
-                      body: "Anyone can view — only people you invited by email can reply.",
+                      body: "Anyone can view. Only people you invited by email can reply.",
                       defaultChecked: false,
                     },
                   ].map((opt) => (

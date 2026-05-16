@@ -114,7 +114,7 @@ const steps = [
     kicker: "then",
     frame: "send link",
     title: "Share it",
-    body: "One link goes wherever — text, group chat, email.",
+    body: "One link goes wherever. Text, group chat, email.",
     accent: "mustard",
     preview: (
       <div className="space-y-4">
@@ -187,14 +187,14 @@ const steps = [
             <span className="inline-flex h-3.5 w-3.5 items-center justify-center rounded-sm border-2 border-olive bg-olive text-[8px] text-paper-light">
               ✓
             </span>
-            <span className="line-through text-ink-soft">Maya — chips</span>
+            <span className="line-through text-ink-soft">Maya, chips</span>
           </li>
           <li className="flex items-center gap-1.5">
             <span
               className="inline-block h-3.5 w-3.5 rounded-sm border-2 border-ink/40"
               aria-hidden
             />
-            <span>Ben — dessert</span>
+            <span>Ben, dessert</span>
           </li>
         </ul>
       </div>
@@ -205,19 +205,19 @@ const steps = [
 const quotes = [
   {
     text: "I stopped chasing people for RSVPs.",
-    author: "Maya — Brooklyn dinners",
+    author: "Maya, Brooklyn dinners",
     tilt: "-rotate-2",
     tape: "mustard" as const,
   },
   {
     text: "We didn't double-buy chips this time.",
-    author: "Ben & Sasha — block party",
+    author: "Ben & Sasha, block party",
     tilt: "rotate-1",
     tape: "coral" as const,
   },
   {
     text: "Even my dad RSVP'd. From his phone.",
-    author: "Dom — birthday for mum",
+    author: "Dom, birthday for mum",
     tilt: "-rotate-1",
     tape: "olive" as const,
   },
@@ -230,7 +230,7 @@ const faq = [
   },
   {
     q: "How much does it cost?",
-    a: "Free while we're small. If we ever charge, the basics — events, RSVPs, sharing — stay free.",
+    a: "Free while we're small. If we ever charge, the basics stay free: events, RSVPs, sharing.",
   },
   {
     q: "Is my event private?",
@@ -242,7 +242,7 @@ const faq = [
   },
   {
     q: "Does this work on my phone?",
-    a: "Yes — the guest invite page is mobile-first. Most of your guests will open it on a phone anyway.",
+    a: "Yes, the guest invite page is mobile-first. Most of your guests will open it on a phone anyway.",
   },
   {
     q: "Can I host more than one event?",
@@ -297,7 +297,7 @@ export default function HomePage() {
             </span>
           </h1>
           <p className="mx-auto mt-8 max-w-xl text-lg text-ink-soft text-pretty">
-            kindred is a small shared workspace for whoever's bringing what —
+            Kindred is a small shared workspace for whoever's bringing what,
             and who's actually coming.
           </p>
           <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
@@ -378,7 +378,7 @@ export default function HomePage() {
               </span>
             </h2>
             <p className="mt-5 max-w-md text-ink-soft">
-              Invites, RSVPs, budget, food, and tasks — all in one shared event:
+              Invites, RSVPs, budget, food, and tasks, all in one shared event:
             </p>
             <ul className="mt-6 space-y-2.5">
               {winStuff.map((w, i) => (

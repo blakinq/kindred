@@ -120,7 +120,7 @@ export function RsvpForm({
               required={emailRequired}
             />
             <p className="text-xs text-ink-soft normal-case tracking-normal">
-              Helps the host follow up — not shared with other guests.
+              Helps the host follow up. Not shared with other guests.
             </p>
           </div>
 
