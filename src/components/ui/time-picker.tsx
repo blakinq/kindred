@@ -187,7 +187,7 @@ function SegmentButton({
       onClick={onClick}
       aria-pressed={active}
       className={cn(
-        "h-9 rounded-lg font-display text-xs font-bold uppercase tracking-wider transition-all",
+        "h-10 rounded-lg font-display text-xs font-bold uppercase tracking-wider transition-all",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:ring-offset-2 focus-visible:ring-offset-paper-deep",
         active
           ? "border-2 border-ink bg-terracotta text-paper-light shadow-stamp-sm"
@@ -214,7 +214,7 @@ function CellButton({
       onClick={onClick}
       aria-pressed={active}
       className={cn(
-        "h-9 rounded-lg border-2 text-sm font-medium tabular-nums transition-all",
+        "h-10 rounded-lg border-2 text-sm font-medium tabular-nums transition-all",
         "focus-visible:outline-none focus-visible:border-ink focus-visible:bg-mustard focus-visible:text-ink",
         active
           ? "border-ink bg-terracotta text-paper-light shadow-stamp-sm"

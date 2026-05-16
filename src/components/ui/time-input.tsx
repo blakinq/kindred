@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { ArrowLeftRight } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { TimePicker } from "@/components/ui/time-picker";
@@ -207,7 +206,7 @@ export function TimeInput({
           }}
           onBlur={commit}
           className={cn(
-            "flex h-11 w-full rounded-xl border-2 border-ink/85 bg-paper-light px-4 py-2 pr-[68px] text-[15px] text-ink",
+            "flex h-11 w-full rounded-xl border-2 border-ink/85 bg-paper-light px-4 py-2 pr-12 text-[15px] text-ink",
             "placeholder:text-ink-soft/70",
             "focus-visible:outline-none focus-visible:border-terracotta focus-visible:shadow-[2px_2px_0_hsl(var(--terracotta-deep))]",
             "transition-shadow",
@@ -267,18 +266,14 @@ function FormatToggle({
       aria-label={`Switch to ${otherFormat === "12h" ? "12-hour" : "24-hour"} format`}
       title={`Switch to ${otherFormat === "12h" ? "12-hour" : "24-hour"} format`}
       className={cn(
-        "group absolute right-1.5 top-1/2 inline-flex h-7 -translate-y-1/2 select-none items-center gap-1 rounded-md border-2 border-ink/40 bg-paper-deep px-1.5 font-display text-[10px] font-bold uppercase tracking-wider text-ink-soft transition-all",
+        "absolute right-1.5 top-1/2 inline-flex h-8 w-9 -translate-y-1/2 select-none items-center justify-center rounded-md border-2 border-ink/40 bg-paper-deep font-display text-[10px] font-bold uppercase tracking-wider text-ink-soft transition-all",
         "hover:-translate-y-[calc(50%+1px)] hover:border-ink hover:bg-mustard hover:text-ink hover:shadow-stamp-sm",
         "focus-visible:outline-none focus-visible:border-ink focus-visible:bg-mustard focus-visible:text-ink",
         "active:translate-y-[calc(-50%+1px)] active:shadow-none",
         "disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-[-50%] disabled:hover:bg-paper-deep disabled:hover:border-ink/40 disabled:hover:text-ink-soft disabled:hover:shadow-none",
       )}
     >
-      <ArrowLeftRight
-        className="h-3 w-3 transition-transform group-hover:rotate-180"
-        aria-hidden
-      />
-      <span>{format === "12h" ? "12H" : "24H"}</span>
+      {format === "12h" ? "12H" : "24H"}
     </button>
   );
 }

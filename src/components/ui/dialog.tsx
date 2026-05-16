@@ -62,7 +62,15 @@ export function Dialog({
   if (!mounted || !open) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-[200] grid place-items-center px-4 py-8">
+    <div
+      className="fixed inset-0 z-[200] grid place-items-center px-4 py-8"
+      style={{
+        paddingTop: "max(2rem, env(safe-area-inset-top))",
+        paddingBottom: "max(2rem, env(safe-area-inset-bottom))",
+        paddingLeft: "max(1rem, env(safe-area-inset-left))",
+        paddingRight: "max(1rem, env(safe-area-inset-right))",
+      }}
+    >
       <button
         type="button"
         aria-label="Close dialog"
@@ -79,7 +87,7 @@ export function Dialog({
         tabIndex={-1}
         data-lenis-prevent
         className={cn(
-          "relative z-10 w-full max-w-md max-h-[calc(100vh-4rem)] overflow-y-auto overscroll-contain animate-dialog-pop rounded-2xl border-2 border-ink/85 bg-paper-light p-6 shadow-stamp-lg",
+          "relative z-10 w-full max-w-md max-h-[calc(100vh-4rem)] overflow-y-auto overscroll-contain animate-dialog-pop rounded-2xl border-2 border-ink/85 bg-paper-light p-5 shadow-stamp-lg sm:p-6",
           "focus:outline-none",
           className,
         )}

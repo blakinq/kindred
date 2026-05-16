@@ -28,7 +28,9 @@ export function EventSidebar({ eventId }: { eventId: string }) {
   const base = `/app/events/${eventId}`;
 
   return (
-    <nav className="flex flex-row gap-1 overflow-x-auto pb-1 md:flex-col md:overflow-visible md:pb-0">
+    <nav
+      className="flex flex-row gap-1 overflow-x-auto pb-1 [mask-image:linear-gradient(to_right,black_calc(100%-32px),transparent)] md:flex-col md:overflow-visible md:pb-0 md:[mask-image:none]"
+    >
       {items.map(({ href, label, icon: Icon }) => {
         const full = `${base}${href}`;
         const isActive =

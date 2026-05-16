@@ -27,7 +27,12 @@ type DropdownProps = {
   "aria-label"?: string;
 };
 
-type PanelRect = { top: number; left: number; width: number };
+type PanelRect =
+  | { mode: "below"; top: number; left: number; width: number }
+  | { mode: "above"; bottom: number; left: number; width: number };
+
+const PANEL_MAX_HEIGHT = 256;
+const PANEL_GAP = 8;
 
 export function Dropdown({
   options,
@@ -64,7 +69,26 @@ export function Dropdown({
     const btn = buttonRef.current;
     if (!btn) return;
     const r = btn.getBoundingClientRect();
-    setRect({ top: r.bottom + 8, left: r.left, width: r.width });
+    const viewportH = window.innerHeight;
+    const spaceBelow = viewportH - r.bottom;
+    const spaceAbove = r.top;
+    const wantFlip =
+      spaceBelow < Math.min(PANEL_MAX_HEIGHT, 200) && spaceAbove > spaceBelow;
+    if (wantFlip) {
+      setRect({
+        mode: "above",
+        bottom: viewportH - r.top + PANEL_GAP,
+        left: r.left,
+        width: r.width,
+      });
+    } else {
+      setRect({
+        mode: "below",
+        top: r.bottom + PANEL_GAP,
+        left: r.left,
+        width: r.width,
+      });
+    }
   }, []);
 
   React.useLayoutEffect(() => {
@@ -184,15 +208,24 @@ export function Dropdown({
       aria-activedescendant={
         activeIdx >= 0 ? `${id ?? name ?? "dd"}-opt-${activeIdx}` : undefined
       }
-      style={{
-        position: "fixed",
-        top: rect.top,
-        left: rect.left,
-        width: rect.width,
-      }}
+      style={
+        rect.mode === "below"
+          ? {
+              position: "fixed",
+              top: rect.top,
+              left: rect.left,
+              width: rect.width,
+            }
+          : {
+              position: "fixed",
+              bottom: rect.bottom,
+              left: rect.left,
+              width: rect.width,
+            }
+      }
       className={cn(
-        "z-[300] max-h-64 origin-top overflow-auto overscroll-contain rounded-xl border-2 border-ink/85 bg-paper-light p-1.5 shadow-stamp-lg",
-        "animate-fade-up",
+        "z-[300] max-h-64 overflow-auto overscroll-contain rounded-xl border-2 border-ink/85 bg-paper-light p-1.5 shadow-stamp-lg",
+        rect.mode === "below" ? "origin-top animate-fade-up" : "origin-bottom animate-fade-down",
         panelClassName,
       )}
     >

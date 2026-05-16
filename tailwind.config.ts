@@ -80,6 +80,10 @@ const config: Config = {
           "0%": { opacity: "0", transform: "translateY(8px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
+        "fade-down": {
+          "0%": { opacity: "0", transform: "translateY(-8px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
         "dialog-fade": {
           "0%": { opacity: "0" },
           "100%": { opacity: "1" },
@@ -95,6 +99,7 @@ const config: Config = {
       },
       animation: {
         "fade-up": "fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) both",
+        "fade-down": "fade-down 0.5s cubic-bezier(0.22, 1, 0.36, 1) both",
         "dialog-fade": "dialog-fade 0.18s ease-out both",
         "dialog-pop": "dialog-pop 0.22s cubic-bezier(0.34, 1.56, 0.64, 1) both",
         wobble: "wobble 3s ease-in-out infinite",

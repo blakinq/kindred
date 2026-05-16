@@ -383,7 +383,7 @@ export function EventForm({
       )}
 
       <div className="flex items-center justify-between gap-3 border-t-2 border-dashed border-rule pt-6">
-        <Squiggle className="h-2 w-20 text-terracotta opacity-60" />
+        <Squiggle className="hidden h-2 w-20 text-terracotta opacity-60 sm:block" />
         <div className="flex gap-3">
           <Button asChild variant="ghost">
             <Link href={cancelHref}>Cancel</Link>

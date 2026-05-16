@@ -186,7 +186,7 @@ export function CalendarPicker({
               aria-pressed={isSelected}
               aria-label={cell.date.toDateString()}
               className={cn(
-                "h-10 rounded-lg border-2 text-sm font-medium tabular-nums transition-all",
+                "h-11 rounded-lg border-2 text-sm font-medium tabular-nums transition-all",
                 "focus-visible:outline-none focus-visible:border-ink focus-visible:bg-mustard focus-visible:text-ink",
                 isSelected
                   ? "border-ink bg-terracotta text-paper-light shadow-stamp-sm hover:-translate-y-px hover:shadow-stamp"
@@ -239,7 +239,7 @@ function NavButton({
       aria-label={ariaLabel}
       title={ariaLabel}
       className={cn(
-        "inline-flex h-8 w-8 items-center justify-center rounded-lg border-2 border-ink/40 bg-paper-deep text-ink-soft transition-all",
+        "inline-flex h-9 w-9 items-center justify-center rounded-lg border-2 border-ink/40 bg-paper-deep text-ink-soft transition-all",
         "hover:border-ink hover:bg-mustard hover:text-ink hover:shadow-stamp-sm hover:-translate-y-px",
         "focus-visible:outline-none focus-visible:border-ink focus-visible:bg-mustard focus-visible:text-ink",
         "active:translate-y-px active:shadow-none",
