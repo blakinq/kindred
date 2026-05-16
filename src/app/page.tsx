@@ -283,7 +283,7 @@ export default function HomePage() {
             <span className="font-hand text-2xl text-terracotta">a tiny planning tool</span>
             <Squiggle className="h-2 w-12 text-terracotta" />
           </p>
-          <h1 className="font-display text-5xl font-bold leading-[1.02] tracking-tight text-balance md:text-7xl">
+          <h1 className="font-display text-4xl font-bold leading-[1.02] tracking-tight text-balance md:text-6xl">
             Plan dinners.
             <br />
             Plan birthdays.
@@ -342,7 +342,7 @@ export default function HomePage() {
         <div className="grid gap-10 md:grid-cols-2 md:items-start md:gap-16">
           <div>
             <Stamp className="text-ink-soft">Instead of</Stamp>
-            <h2 className="mt-4 font-display text-4xl font-bold leading-[1.05] tracking-tight md:text-5xl">
+            <h2 className="mt-4 font-display text-3xl font-bold leading-[1.05] tracking-tight md:text-4xl">
               Three group chats.
               <br />
               One missing pie.
@@ -366,7 +366,7 @@ export default function HomePage() {
           <div className="relative">
             <CornerCurl className="absolute -right-2 -top-2 h-10 w-10 text-terracotta" />
             <Stamp className="text-terracotta-deep">kindred</Stamp>
-            <h2 className="mt-4 font-display text-4xl font-bold leading-[1.05] tracking-tight md:text-5xl">
+            <h2 className="mt-4 font-display text-3xl font-bold leading-[1.05] tracking-tight md:text-4xl">
               One page.
               <br />
               <span className="relative inline-block">
@@ -417,7 +417,7 @@ export default function HomePage() {
             <p className="font-hand text-2xl text-terracotta">
               three little steps
             </p>
-            <h2 className="mt-2 font-display text-4xl font-bold tracking-tight md:text-5xl">
+            <h2 className="mt-2 font-display text-3xl font-bold tracking-tight md:text-4xl">
               How it goes
             </h2>
             <p className="mt-3 text-ink-soft">
@@ -509,7 +509,7 @@ export default function HomePage() {
       <section className="container py-20">
         <div className="mb-10 max-w-2xl">
           <p className="font-hand text-2xl text-terracotta">four little things</p>
-          <h2 className="mt-2 font-display text-4xl font-bold tracking-tight md:text-5xl">
+          <h2 className="mt-2 font-display text-3xl font-bold tracking-tight md:text-4xl">
             Everything you need.
             <br />
             Nothing you don't.
@@ -551,7 +551,7 @@ export default function HomePage() {
       <section className="container py-20">
         <div className="mb-10 max-w-2xl">
           <p className="font-hand text-2xl text-terracotta">small wins</p>
-          <h2 className="mt-2 font-display text-4xl font-bold tracking-tight md:text-5xl">
+          <h2 className="mt-2 font-display text-3xl font-bold tracking-tight md:text-4xl">
             The kind of stuff
             <br />
             you'll say after.
@@ -589,7 +589,7 @@ export default function HomePage() {
       <section className="container py-20">
         <div className="mx-auto mb-10 max-w-2xl text-center">
           <p className="font-hand text-2xl text-terracotta">yes, but…</p>
-          <h2 className="mt-2 font-display text-4xl font-bold tracking-tight md:text-5xl">
+          <h2 className="mt-2 font-display text-3xl font-bold tracking-tight md:text-4xl">
             What people ask
           </h2>
         </div>
@@ -623,7 +623,7 @@ export default function HomePage() {
           <Sparkle className="absolute -left-3 top-12 h-7 w-7 -rotate-12 text-mustard" />
           <Sparkle className="absolute bottom-10 right-4 h-5 w-5 rotate-12 text-terracotta" />
           <p className="font-hand text-2xl text-terracotta">go on</p>
-          <h2 className="mt-2 font-display text-4xl font-bold tracking-tight md:text-5xl text-balance">
+          <h2 className="mt-2 font-display text-3xl font-bold tracking-tight md:text-4xl text-balance">
             Host something good.
           </h2>
           <p className="mx-auto mt-4 max-w-md text-ink-soft">
