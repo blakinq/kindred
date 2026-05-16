@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import Link from "next/link";
 import { useActionState } from "react";
 import { useSearchParams } from "next/navigation";
@@ -12,6 +13,14 @@ import { Card, CardContent } from "@/components/ui/card";
 import { BackLink } from "@/components/ui/back-link";
 
 export default function LoginPage() {
+  return (
+    <Suspense fallback={<LoginFallback />}>
+      <LoginForm />
+    </Suspense>
+  );
+}
+
+function LoginForm() {
   const [state, formAction, pending] = useActionState(loginAction, undefined);
   const params = useSearchParams();
   const next = params.get("next") ?? "";
@@ -77,6 +86,27 @@ export default function LoginPage() {
               Make an account
             </Link>
           </p>
+        </CardContent>
+      </Card>
+    </>
+  );
+}
+
+function LoginFallback() {
+  return (
+    <>
+      <BackLink href="/">Back to home</BackLink>
+      <Card tape="mustard" className="animate-fade-up">
+        <CardContent className="p-8">
+          <p className="font-hand text-2xl text-terracotta">welcome back</p>
+          <h1 className="mt-1 font-display text-3xl font-bold tracking-tight">
+            Let's get planning
+          </h1>
+          <div className="mt-8 space-y-5" aria-hidden>
+            <div className="h-11 rounded-xl border-2 border-ink/20 bg-paper-deep/60" />
+            <div className="h-11 rounded-xl border-2 border-ink/20 bg-paper-deep/60" />
+            <div className="h-11 rounded-xl border-2 border-ink/20 bg-paper-deep/60" />
+          </div>
         </CardContent>
       </Card>
     </>
