@@ -91,7 +91,7 @@ export default async function PublicEventPage({
               </h1>
               {event.event_type && (
                 <p className="mt-2 font-hand text-2xl text-terracotta">
-                  a {event.event_type}
+                  {event.event_type}
                 </p>
               )}
             </div>
