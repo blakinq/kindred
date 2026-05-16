@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Pencil } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { EventSidebar } from "@/components/event-sidebar";
 import { formatEventDate } from "@/lib/utils";
@@ -52,6 +53,13 @@ export default async function EventLayout({
         <div className="flex items-center gap-2">
           {event.status === "archived" && <Badge variant="muted">Archived</Badge>}
           {isPast && <Badge variant="muted">Past</Badge>}
+          <Link
+            href={`/app/events/${event.id}/edit`}
+            className="inline-flex items-center gap-1.5 rounded-xl border-2 border-ink/85 bg-paper-light px-3 py-1.5 font-display text-xs font-bold uppercase tracking-wider text-ink transition-all hover:-translate-y-0.5 hover:bg-mustard hover:shadow-stamp-sm focus-visible:outline-none focus-visible:bg-mustard focus-visible:shadow-stamp-sm"
+          >
+            <Pencil className="h-3.5 w-3.5" aria-hidden />
+            Edit details
+          </Link>
         </div>
       </header>
 
