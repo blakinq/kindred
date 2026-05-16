@@ -398,7 +398,7 @@ export function BudgetTab({
                       }
                       options={PAYMENT_OPTIONS}
                       size="sm"
-                      className="w-28"
+                      className="w-36"
                       aria-label={`Change payment status for ${e.name}`}
                     />
                   </div>
