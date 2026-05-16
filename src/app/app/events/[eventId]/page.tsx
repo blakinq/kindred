@@ -179,37 +179,48 @@ export default async function DashboardPage({
       </div>
 
       {/* Next actions */}
-      <Card>
-        <CardHeader>
-          <div className="flex items-center gap-2">
-            <CardTitle>To-do list</CardTitle>
-            <Squiggle className="h-2 w-16 text-terracotta" />
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-2">
-          {(rsvpCounts.invited ?? 0) + (rsvpCounts.no_response ?? 0) === 0 &&
-            attendees === 0 && (
-              <Action href={`/app/events/${eventId}/guests`}>
-                Add your first guests so people can RSVP
-              </Action>
-            )}
-          {projected === 0 && (
-            <Action href={`/app/events/${eventId}/budget`}>
-              Add a budget so you know what you're working with
-            </Action>
-          )}
-          {unclaimed === 0 && (food ?? []).length === 0 && (
-            <Action href={`/app/events/${eventId}/food-supplies`}>
-              Plan food and supplies — let guests pick what to bring
-            </Action>
-          )}
-          {(tasks ?? []).length === 0 && (
-            <Action href={`/app/events/${eventId}/tasks`}>
-              Break prep into tasks and assign them
-            </Action>
-          )}
-        </CardContent>
-      </Card>
+      {(() => {
+        const needsGuests =
+          (rsvpCounts.invited ?? 0) + (rsvpCounts.no_response ?? 0) === 0 &&
+          attendees === 0;
+        const needsBudget = projected === 0;
+        const needsFood = unclaimed === 0 && (food ?? []).length === 0;
+        const needsTasks = (tasks ?? []).length === 0;
+        const hasTodos = needsGuests || needsBudget || needsFood || needsTasks;
+        if (!hasTodos) return null;
+        return (
+          <Card>
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <CardTitle>To-do list</CardTitle>
+                <Squiggle className="h-2 w-16 text-terracotta" />
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              {needsGuests && (
+                <Action href={`/app/events/${eventId}/guests`}>
+                  Add your first guests so people can RSVP
+                </Action>
+              )}
+              {needsBudget && (
+                <Action href={`/app/events/${eventId}/budget`}>
+                  Add a budget so you know what you're working with
+                </Action>
+              )}
+              {needsFood && (
+                <Action href={`/app/events/${eventId}/food-supplies`}>
+                  Plan food and supplies — let guests pick what to bring
+                </Action>
+              )}
+              {needsTasks && (
+                <Action href={`/app/events/${eventId}/tasks`}>
+                  Break prep into tasks and assign them
+                </Action>
+              )}
+            </CardContent>
+          </Card>
+        );
+      })()}
     </div>
   );
 }
