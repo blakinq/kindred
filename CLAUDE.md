@@ -30,6 +30,13 @@ Per PRD §24.1.4, kindred is a modular monolith with **two intentionally separat
 
 **Critical:** never widen RLS to cover the public surface. If you need to expose new data publicly, extend `get_public_event` to return more columns, or add another `SECURITY DEFINER` RPC. Budget data, host emails, and guest contact info must never leak to anonymous visitors.
 
+**Public food-claim privacy invariants** (enforced in `src/components/public-food-claim.tsx`):
+
+- Claimer identities (`claimed_by_name`) are not rendered on the invite page. Only the aggregated `X of Y claimed` count is shown.
+- Fully-claimed items are filtered out before render; the public "What to bring" block disappears entirely once every item is covered.
+
+If a future change relaxes either of these, it leaks who-brought-what to anonymous link visitors.
+
 ### Permission helper
 
 Host-side tables (`events`, `guests`, `expenses`, `food_supply_items`, `menu_items`, `tasks`, `event_cohosts`, `event_activities`) use one shared RLS predicate:
@@ -102,7 +109,7 @@ Fonts via `next/font/google` in `src/app/layout.tsx`: Bricolage Grotesque (displ
 
 ### Toasts and confirms
 
-User-facing feedback uses one tiny global store in `src/lib/toast.ts`. Server-action handlers call `toast.success(title, description?)` or `toast.error(title, description?)` after every mutation; the `<Toaster />` mounted in the root layout renders them. Destructive actions go through `ConfirmDialog` in `src/components/ui/confirm-dialog.tsx`.
+User-facing feedback uses one tiny global store in `src/lib/toast.ts`. Four helpers exist — `toast.success`, `toast.error`, `toast.info`, `toast.warning` — each taking `(title, description?)`. Server-action handlers call one after every mutation; the `<Toaster />` mounted in the root layout renders them. Destructive actions go through `ConfirmDialog` in `src/components/ui/confirm-dialog.tsx`.
 
 ### Next.js 15 / React 19 quirks
 
