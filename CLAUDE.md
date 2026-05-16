@@ -52,7 +52,7 @@ Adding a new event-scoped table means adding RLS that calls this helper, not re-
 Each route folder has an `actions.ts` next to `page.tsx`:
 
 ```
-src/app/app/events/actions.ts                              # createEvent, updateEventSettings
+src/app/app/events/actions.ts                              # createEvent, updateEventDetails, updateEventSettings
 src/app/app/events/[eventId]/guests/actions.ts             # addGuest, bulkAddGuests, updateGuestRsvp, deleteGuest
 src/app/app/events/[eventId]/budget/actions.ts             # expense CRUD
 src/app/app/events/[eventId]/food/actions.ts               # menu item CRUD
@@ -65,6 +65,12 @@ src/app/e/[slug]/actions.ts                                # submitRsvp, claimFo
 There is no REST API layer. Pages use server actions; the public invite page is the only route that needs to mutate without an authenticated user, and it does so via the RPCs.
 
 Server actions validate FormData with Zod schemas from `src/lib/validation.ts` — extend those rather than re-validating ad hoc.
+
+### Event create & edit share one form
+
+`src/components/event-form.tsx` (`EventForm`) is rendered by both `/app/events/new` and `/app/events/edit/[eventId]`. It accepts `initial` values (omit for create) and an `action` (the bound server action). Changing the fields that get filled at creation means editing this one component — don't fork it.
+
+**Edit page placement is intentional**: `src/app/app/events/edit/[eventId]/page.tsx` lives OUTSIDE the `[eventId]/` segment. `src/app/app/events/[eventId]/layout.tsx` renders the sidebar + event-header shell around every page nested under it; the edit form needs a clean full-page canvas (like `/app/events/new`), so it deliberately escapes that shell by sitting under a sibling `edit/` segment. Don't move it back into `[eventId]/edit/` for URL tidiness — you'll re-introduce the sidebar.
 
 ### Supabase client surfaces (three of them, same name)
 
