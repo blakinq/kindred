@@ -92,9 +92,11 @@ export function BudgetTab({
   }, [expenses]);
 
   const overBudget =
+    budgetTargetCents != null && totals.actual > budgetTargetCents;
+  const overByEstimate =
     budgetTargetCents != null && totals.estimated > budgetTargetCents;
   const remaining =
-    budgetTargetCents == null ? null : budgetTargetCents - totals.estimated;
+    budgetTargetCents == null ? null : budgetTargetCents - totals.actual;
 
   function onAddExpense(formData: FormData) {
     const name = String(formData.get("name") ?? "").trim();
@@ -165,7 +167,7 @@ export function BudgetTab({
             <p
               className={
                 "mt-1 font-display text-3xl font-bold tracking-tight " +
-                (overBudget ? "text-terracotta-deep" : "text-ink")
+                (overByEstimate ? "text-terracotta-deep" : "text-ink")
               }
             >
               {formatCurrency(totals.estimated, currency)}
