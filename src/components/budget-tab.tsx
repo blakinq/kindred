@@ -265,6 +265,7 @@ export function BudgetTab({
         onClose={pending ? () => {} : () => setShowAdd(false)}
         tape="coral"
         className="max-w-2xl"
+        scrollBody
       >
         <DialogHeader>
           <DialogTitle>Log an expense</DialogTitle>
@@ -273,59 +274,61 @@ export function BudgetTab({
         <form
           id="add-expense-form"
           action={onAddExpense}
-          className="mt-5 grid gap-3 sm:grid-cols-2"
+          className="mt-5 flex min-h-0 flex-1 flex-col"
         >
-          <div className="space-y-1 sm:col-span-2">
-            <Label htmlFor="e-name">Name</Label>
-            <Input id="e-name" name="name" placeholder="Catering deposit" required />
+          <div className="-mr-2 grid min-h-0 flex-1 gap-3 overflow-y-auto pr-2 sm:grid-cols-2">
+            <div className="space-y-1 sm:col-span-2">
+              <Label htmlFor="e-name">Name</Label>
+              <Input id="e-name" name="name" placeholder="Catering deposit" required />
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="e-category">Category</Label>
+              <Dropdown
+                id="e-category"
+                name="category"
+                defaultValue="other"
+                options={CATEGORY_OPTIONS}
+              />
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="e-status">Status</Label>
+              <Dropdown
+                id="e-status"
+                name="payment_status"
+                defaultValue="unpaid"
+                options={PAYMENT_OPTIONS}
+              />
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="e-est">Estimated</Label>
+              <Input
+                id="e-est"
+                name="estimated_amount"
+                type="text"
+                inputMode="decimal"
+                placeholder="0.00"
+              />
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="e-actual">Actual</Label>
+              <Input
+                id="e-actual"
+                name="actual_amount"
+                type="text"
+                inputMode="decimal"
+                placeholder="0.00"
+              />
+            </div>
+            <div className="space-y-1 sm:col-span-2">
+              <Label htmlFor="e-paid-by">Paid by (optional)</Label>
+              <Input id="e-paid-by" name="paid_by_name" placeholder="Enter name" />
+            </div>
+            <div className="space-y-1 sm:col-span-2">
+              <Label htmlFor="e-notes">Notes (optional)</Label>
+              <Textarea id="e-notes" name="notes" rows={2} />
+            </div>
           </div>
-          <div className="space-y-1">
-            <Label htmlFor="e-category">Category</Label>
-            <Dropdown
-              id="e-category"
-              name="category"
-              defaultValue="other"
-              options={CATEGORY_OPTIONS}
-            />
-          </div>
-          <div className="space-y-1">
-            <Label htmlFor="e-status">Status</Label>
-            <Dropdown
-              id="e-status"
-              name="payment_status"
-              defaultValue="unpaid"
-              options={PAYMENT_OPTIONS}
-            />
-          </div>
-          <div className="space-y-1">
-            <Label htmlFor="e-est">Estimated</Label>
-            <Input
-              id="e-est"
-              name="estimated_amount"
-              type="text"
-              inputMode="decimal"
-              placeholder="0.00"
-            />
-          </div>
-          <div className="space-y-1">
-            <Label htmlFor="e-actual">Actual</Label>
-            <Input
-              id="e-actual"
-              name="actual_amount"
-              type="text"
-              inputMode="decimal"
-              placeholder="0.00"
-            />
-          </div>
-          <div className="space-y-1 sm:col-span-2">
-            <Label htmlFor="e-paid-by">Paid by (optional)</Label>
-            <Input id="e-paid-by" name="paid_by_name" placeholder="Enter name" />
-          </div>
-          <div className="space-y-1 sm:col-span-2">
-            <Label htmlFor="e-notes">Notes (optional)</Label>
-            <Textarea id="e-notes" name="notes" rows={2} />
-          </div>
-          <DialogFooter className="sm:col-span-2">
+          <DialogFooter>
             <Button
               type="button"
               variant="ghost"

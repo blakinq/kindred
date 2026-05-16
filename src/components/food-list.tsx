@@ -202,6 +202,7 @@ export function FoodList({
         onClose={pending ? () => {} : () => setShowAdd(false)}
         tape="ocean"
         className="max-w-2xl"
+        scrollBody
       >
         <DialogHeader>
           <DialogTitle>Add an item</DialogTitle>
@@ -210,87 +211,89 @@ export function FoodList({
         <form
           id="add-food-form"
           action={onAdd}
-          className="mt-5 grid gap-3 sm:grid-cols-2"
+          className="mt-5 flex min-h-0 flex-1 flex-col"
         >
-          <div className="space-y-1 sm:col-span-2">
-            <Label htmlFor="f-name">Name</Label>
-            <Input id="f-name" name="name" placeholder="Garlic bread" required />
-          </div>
-          <div className="space-y-1">
-            <Label htmlFor="f-category">Category</Label>
-            <Dropdown
-              id="f-category"
-              name="category"
-              defaultValue="other_supplies"
-              options={CATEGORY_OPTIONS}
-            />
-          </div>
-          <div className="space-y-1">
-            <Label htmlFor="f-status">Status</Label>
-            <Dropdown
-              id="f-status"
-              name="status"
-              defaultValue="needed"
-              options={STATUS_OPTIONS}
-            />
-          </div>
-          <div className="space-y-1">
-            <Label htmlFor="f-qty">Quantity (optional)</Label>
-            <Input
-              id="f-qty"
-              name="quantity"
-              type="text"
-              inputMode="decimal"
-              placeholder="2"
-            />
-          </div>
-          <div className="space-y-1">
-            <Label htmlFor="f-unit">Unit (optional)</Label>
-            <Input id="f-unit" name="unit" placeholder="loaves, bottles…" />
-          </div>
-          <div className="space-y-1">
-            <Label htmlFor="f-needed">How many needed</Label>
-            <Input
-              id="f-needed"
-              name="needed_count"
-              type="number"
-              min={1}
-              defaultValue={1}
-            />
-          </div>
-          <div className="space-y-1">
-            <Label htmlFor="f-est">Est. cost (optional)</Label>
-            <Input
-              id="f-est"
-              name="estimated_cost"
-              type="text"
-              inputMode="decimal"
-              placeholder="0.00"
-            />
-          </div>
-          <div className="sm:col-span-2">
-            <label className="flex cursor-pointer items-center gap-3 rounded-xl border-2 border-ink/85 bg-paper-light px-4 py-3 transition-colors hover:bg-paper-deep/40">
-              <input
-                type="checkbox"
-                name="is_guest_claimable"
-                defaultChecked
-                className="h-4 w-4 accent-terracotta"
+          <div className="-mr-2 grid min-h-0 flex-1 gap-3 overflow-y-auto pr-2 sm:grid-cols-2">
+            <div className="space-y-1 sm:col-span-2">
+              <Label htmlFor="f-name">Name</Label>
+              <Input id="f-name" name="name" placeholder="Garlic bread" required />
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="f-category">Category</Label>
+              <Dropdown
+                id="f-category"
+                name="category"
+                defaultValue="other_supplies"
+                options={CATEGORY_OPTIONS}
               />
-              <span>
-                <span className="block font-display text-sm font-bold">
-                  Guests can claim this
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="f-status">Status</Label>
+              <Dropdown
+                id="f-status"
+                name="status"
+                defaultValue="needed"
+                options={STATUS_OPTIONS}
+              />
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="f-qty">Quantity (optional)</Label>
+              <Input
+                id="f-qty"
+                name="quantity"
+                type="text"
+                inputMode="decimal"
+                placeholder="2"
+              />
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="f-unit">Unit (optional)</Label>
+              <Input id="f-unit" name="unit" placeholder="loaves, bottles…" />
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="f-needed">How many needed</Label>
+              <Input
+                id="f-needed"
+                name="needed_count"
+                type="number"
+                min={1}
+                defaultValue={1}
+              />
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="f-est">Est. cost (optional)</Label>
+              <Input
+                id="f-est"
+                name="estimated_cost"
+                type="text"
+                inputMode="decimal"
+                placeholder="0.00"
+              />
+            </div>
+            <div className="sm:col-span-2">
+              <label className="flex cursor-pointer items-center gap-3 rounded-xl border-2 border-ink/85 bg-paper-light px-4 py-3 transition-colors hover:bg-paper-deep/40">
+                <input
+                  type="checkbox"
+                  name="is_guest_claimable"
+                  defaultChecked
+                  className="h-4 w-4 accent-terracotta"
+                />
+                <span>
+                  <span className="block font-display text-sm font-bold">
+                    Guests can claim this
+                  </span>
+                  <span className="block text-xs text-ink-soft">
+                    Shows up on their invite page when claiming is enabled.
+                  </span>
                 </span>
-                <span className="block text-xs text-ink-soft">
-                  Shows up on their invite page when claiming is enabled.
-                </span>
-              </span>
-            </label>
+              </label>
+            </div>
+            <div className="space-y-1 sm:col-span-2">
+              <Label htmlFor="f-notes">Notes (optional)</Label>
+              <Textarea id="f-notes" name="notes" rows={2} />
+            </div>
           </div>
-          <div className="space-y-1 sm:col-span-2">
-            <Label htmlFor="f-notes">Notes (optional)</Label>
-            <Textarea id="f-notes" name="notes" rows={2} />
-          </div>
-          <DialogFooter className="sm:col-span-2">
+          <DialogFooter>
             <Button
               type="button"
               variant="ghost"

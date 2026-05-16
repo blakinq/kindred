@@ -273,6 +273,7 @@ export function MenuList({
         onClose={pending ? () => {} : () => setShowAdd(false)}
         tape="ocean"
         className="max-w-2xl"
+        scrollBody
       >
         <DialogHeader>
           <DialogTitle>Add a dish</DialogTitle>
@@ -283,84 +284,86 @@ export function MenuList({
         <form
           id="add-menu-form"
           action={onAdd}
-          className="mt-5 grid gap-3 sm:grid-cols-2"
+          className="mt-5 flex min-h-0 flex-1 flex-col"
         >
-          <div className="space-y-1 sm:col-span-2">
-            <Label htmlFor="m-name">Dish name</Label>
-            <Input
-              id="m-name"
-              name="name"
-              placeholder="Mushroom risotto"
-              required
-            />
+          <div className="-mr-2 grid min-h-0 flex-1 gap-3 overflow-y-auto pr-2 sm:grid-cols-2">
+            <div className="space-y-1 sm:col-span-2">
+              <Label htmlFor="m-name">Dish name</Label>
+              <Input
+                id="m-name"
+                name="name"
+                placeholder="Mushroom risotto"
+                required
+              />
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="m-course">Course</Label>
+              <Dropdown
+                id="m-course"
+                name="course"
+                defaultValue="main"
+                options={COURSE_OPTIONS}
+              />
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="m-status">Status</Label>
+              <Dropdown
+                id="m-status"
+                name="status"
+                defaultValue="planning"
+                options={STATUS_OPTIONS}
+              />
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="m-serves">Serves (people)</Label>
+              <Input
+                id="m-serves"
+                name="serves"
+                type="number"
+                min={1}
+                max={999}
+                placeholder="8"
+              />
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="m-prep">Prep (min)</Label>
+              <Input
+                id="m-prep"
+                name="prep_time_minutes"
+                type="number"
+                min={0}
+                placeholder="20"
+              />
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="m-cook">Cook (min)</Label>
+              <Input
+                id="m-cook"
+                name="cook_time_minutes"
+                type="number"
+                min={0}
+                placeholder="40"
+              />
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="m-url">Recipe link (optional)</Label>
+              <Input
+                id="m-url"
+                name="recipe_url"
+                type="url"
+                placeholder="https://…"
+              />
+            </div>
+            <div className="space-y-1.5 sm:col-span-2">
+              <Label>Dietary tags</Label>
+              <DietaryChips value={tagsToAdd} onChange={setTagsToAdd} />
+            </div>
+            <div className="space-y-1 sm:col-span-2">
+              <Label htmlFor="m-notes">Notes (ingredients, prep steps…)</Label>
+              <Textarea id="m-notes" name="notes" rows={3} />
+            </div>
           </div>
-          <div className="space-y-1">
-            <Label htmlFor="m-course">Course</Label>
-            <Dropdown
-              id="m-course"
-              name="course"
-              defaultValue="main"
-              options={COURSE_OPTIONS}
-            />
-          </div>
-          <div className="space-y-1">
-            <Label htmlFor="m-status">Status</Label>
-            <Dropdown
-              id="m-status"
-              name="status"
-              defaultValue="planning"
-              options={STATUS_OPTIONS}
-            />
-          </div>
-          <div className="space-y-1">
-            <Label htmlFor="m-serves">Serves (people)</Label>
-            <Input
-              id="m-serves"
-              name="serves"
-              type="number"
-              min={1}
-              max={999}
-              placeholder="8"
-            />
-          </div>
-          <div className="space-y-1">
-            <Label htmlFor="m-prep">Prep (min)</Label>
-            <Input
-              id="m-prep"
-              name="prep_time_minutes"
-              type="number"
-              min={0}
-              placeholder="20"
-            />
-          </div>
-          <div className="space-y-1">
-            <Label htmlFor="m-cook">Cook (min)</Label>
-            <Input
-              id="m-cook"
-              name="cook_time_minutes"
-              type="number"
-              min={0}
-              placeholder="40"
-            />
-          </div>
-          <div className="space-y-1">
-            <Label htmlFor="m-url">Recipe link (optional)</Label>
-            <Input
-              id="m-url"
-              name="recipe_url"
-              type="url"
-              placeholder="https://…"
-            />
-          </div>
-          <div className="space-y-1.5 sm:col-span-2">
-            <Label>Dietary tags</Label>
-            <DietaryChips value={tagsToAdd} onChange={setTagsToAdd} />
-          </div>
-          <div className="space-y-1 sm:col-span-2">
-            <Label htmlFor="m-notes">Notes (ingredients, prep steps…)</Label>
-            <Textarea id="m-notes" name="notes" rows={3} />
-          </div>
-          <DialogFooter className="sm:col-span-2">
+          <DialogFooter>
             <Button
               type="button"
               variant="ghost"

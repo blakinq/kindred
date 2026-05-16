@@ -15,6 +15,7 @@ type DialogProps = {
   showClose?: boolean;
   labelledBy?: string;
   describedBy?: string;
+  scrollBody?: boolean;
 };
 
 export function Dialog({
@@ -27,6 +28,7 @@ export function Dialog({
   showClose = true,
   labelledBy,
   describedBy,
+  scrollBody = false,
 }: DialogProps) {
   const [mounted, setMounted] = React.useState(false);
   const cardRef = React.useRef<HTMLDivElement>(null);
@@ -87,8 +89,11 @@ export function Dialog({
         tabIndex={-1}
         data-lenis-prevent
         className={cn(
-          "relative z-10 w-full max-w-md max-h-[calc(100vh-4rem)] overflow-y-auto overscroll-contain animate-dialog-pop rounded-2xl border-2 border-ink/85 bg-paper-light p-5 shadow-stamp-lg sm:p-6",
+          "relative z-10 w-full max-w-md overscroll-contain animate-dialog-pop rounded-2xl border-2 border-ink/85 bg-paper-light p-5 shadow-stamp-lg sm:p-6",
           "focus:outline-none",
+          scrollBody
+            ? "flex max-h-[min(640px,calc(100vh-4rem))] flex-col overflow-hidden"
+            : "max-h-[calc(100vh-4rem)] overflow-y-auto",
           className,
         )}
       >
