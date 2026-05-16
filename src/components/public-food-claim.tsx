@@ -15,18 +15,6 @@ import {
   type FoodStatus,
 } from "@/lib/types";
 
-function dedupeNames(raw: string): string {
-  const seen = new Set<string>();
-  const out: string[] = [];
-  for (const part of raw.split(",")) {
-    const n = part.trim();
-    if (!n || seen.has(n)) continue;
-    seen.add(n);
-    out.push(n);
-  }
-  return out.join(", ");
-}
-
 export type PublicFoodItem = {
   id: string;
   name: string;
@@ -58,9 +46,14 @@ export function PublicFoodClaim({
   const [claimingId, setClaimingId] = useState<string | null>(null);
   const [qtyById, setQtyById] = useState<Record<string, number>>({});
 
+  const visibleItems = useMemo(
+    () => items.filter((i) => i.claimed_count < i.needed_count),
+    [items],
+  );
+
   const grouped = useMemo(() => {
     const map = new Map<FoodCategory, PublicFoodItem[]>();
-    for (const it of items) {
+    for (const it of visibleItems) {
       const arr = map.get(it.category) ?? [];
       arr.push(it);
       map.set(it.category, arr);
@@ -68,7 +61,7 @@ export function PublicFoodClaim({
     return Array.from(map.entries()).sort((a, b) =>
       a[0].localeCompare(b[0]),
     );
-  }, [items]);
+  }, [visibleItems]);
 
   function remainingFor(item: PublicFoodItem) {
     return Math.max(0, item.needed_count - item.claimed_count);
@@ -114,11 +107,9 @@ export function PublicFoodClaim({
     });
   }
 
-  if (items.length === 0) return null;
+  if (visibleItems.length === 0) return null;
 
-  const unclaimedCount = items.filter(
-    (i) => i.claimed_count < i.needed_count,
-  ).length;
+  const unclaimedCount = visibleItems.length;
 
   return (
     <div className="space-y-5">
@@ -201,15 +192,8 @@ export function PublicFoodClaim({
                           <span>
                             {it.claimed_count} of {it.needed_count} claimed
                           </span>
-                        ) : claimedFull ? (
-                          <span>claimed</span>
                         ) : (
                           <span>needs someone</span>
-                        )}
-                        {it.claimed_by_name && (
-                          <span className="font-hand text-base text-terracotta-deep">
-                            — {dedupeNames(it.claimed_by_name)}
-                          </span>
                         )}
                       </div>
                       {it.notes && (
