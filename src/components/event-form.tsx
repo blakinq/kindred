@@ -22,8 +22,6 @@ import { DateInput } from "@/components/ui/date-input";
 import { TimeInput } from "@/components/ui/time-input";
 import { DateTimeInput } from "@/components/ui/datetime-input";
 import { Squiggle } from "@/components/decorations";
-import { toast } from "@/lib/toast";
-import { useEffect, useRef } from "react";
 import type { LocationType, EventVisibility } from "@/lib/types";
 
 const LOCATION_TYPES = [
@@ -69,7 +67,6 @@ type EventFormProps = {
   submitLabel: string;
   pendingLabel: string;
   cancelHref: string;
-  successToast?: { title: string; description?: string };
 };
 
 export function EventForm({
@@ -78,7 +75,6 @@ export function EventForm({
   submitLabel,
   pendingLabel,
   cancelHref,
-  successToast,
 }: EventFormProps) {
   const [state, formAction, pending] = useActionState(action, undefined);
   const [plusOnes, setPlusOnes] = useState<boolean>(
@@ -90,15 +86,6 @@ export function EventForm({
   const showPhysical = locationKind === "physical" || locationKind === "both";
   const showVirtual = locationKind === "virtual" || locationKind === "both";
   const err = state?.fieldErrors ?? {};
-
-  // Toast on successful update (only if action returns success: true)
-  const lastSuccessRef = useRef<boolean | undefined>(undefined);
-  useEffect(() => {
-    if (state?.success && state.success !== lastSuccessRef.current && successToast) {
-      toast.success(successToast.title, successToast.description);
-    }
-    lastSuccessRef.current = state?.success;
-  }, [state?.success, successToast]);
 
   const rsvpDeadlineDefault =
     initial?.rsvp_deadline && initial.rsvp_deadline.length > 16
@@ -215,7 +202,7 @@ export function EventForm({
 
       {/* === WHERE === */}
       <section className="space-y-5">
-        <SectionLabel step="03" title="Where" />
+        <SectionLabel step="03" title="Where" hint="location" />
 
         <div className="space-y-2">
           <Label>Location type</Label>

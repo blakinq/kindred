@@ -6,13 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { CreateEventSchema } from "@/lib/validation";
 import { generateInviteSlug } from "@/lib/utils";
 
-export type EventFormState =
-  | {
-      error?: string;
-      fieldErrors?: Record<string, string>;
-      success?: boolean;
-    }
-  | undefined;
+export type EventFormState = { error?: string; fieldErrors?: Record<string, string> } | undefined;
 
 export async function createEventAction(
   _prev: EventFormState,
@@ -160,7 +154,7 @@ export async function updateEventDetailsAction(
   if (error) return { error: error.message };
 
   revalidatePath(`/app/events/${eventId}`, "layout");
-  return { success: true };
+  redirect(`/app/events/${eventId}`);
 }
 
 export async function updateEventSettingsAction(eventId: string, formData: FormData) {
