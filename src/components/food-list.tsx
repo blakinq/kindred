@@ -153,7 +153,6 @@ export function FoodList({
             <p className="mt-1 font-display text-3xl font-bold tracking-tight">
               {totals.total}
             </p>
-            <p className="mt-1 text-xs text-ink-soft">on the list</p>
           </CardContent>
         </Card>
         <Card tape="coral">
@@ -169,11 +168,6 @@ export function FoodList({
             >
               {totals.unclaimed}
             </p>
-            <p className="mt-1 text-xs text-ink-soft">
-              {totals.unclaimed === 0 && totals.total > 0
-                ? "everything's covered"
-                : "still need someone"}
-            </p>
           </CardContent>
         </Card>
         <Card tape="olive">
@@ -184,7 +178,6 @@ export function FoodList({
             <p className="mt-1 font-display text-3xl font-bold tracking-tight">
               {formatCurrency(totals.estimatedSpend, currency)}
             </p>
-            <p className="mt-1 text-xs text-ink-soft">summed estimated cost</p>
           </CardContent>
         </Card>
       </div>

@@ -56,8 +56,6 @@ export default async function DashboardPage({
       (sum, e) => sum + (e.actual_amount_cents ?? e.estimated_amount_cents ?? 0),
       0,
     ) || 0;
-  const perPerson = attendees > 0 ? Math.round(projected / attendees) : null;
-
   const unclaimed = (food ?? []).filter((f) => f.claimed_count < f.needed_count).length;
   const today = new Date().toISOString().slice(0, 10);
   const overdueTasks = (tasks ?? []).filter(
@@ -128,12 +126,6 @@ export default async function DashboardPage({
               </span>
             )}
           </div>
-          <p className="mt-1 text-xs text-ink-soft">
-            Projected ·{" "}
-            {perPerson != null
-              ? `${formatCurrency(perPerson, event.currency)} per person`
-              : "no confirmed attendees yet"}
-          </p>
         </StatCard>
 
         <StatCard

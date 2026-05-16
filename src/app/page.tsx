@@ -29,7 +29,7 @@ const features = [
   {
     n: "02",
     title: "A budget you can see",
-    body: "Estimated and actual costs, per-person math that updates with RSVPs.",
+    body: "Estimated and actual costs in one place, updating as RSVPs come in.",
     accent: "mustard",
   },
   {
@@ -40,8 +40,8 @@ const features = [
   },
   {
     n: "04",
-    title: "Tasks, handed off",
-    body: "Break prep into pieces and stop carrying the whole thing yourself.",
+    title: "A to-do that doesn't slip",
+    body: "Keep every step in one list so nothing falls through the cracks.",
     accent: "ocean",
   },
 ];
@@ -58,8 +58,8 @@ const winStuff = [
   "One link, sent anywhere",
   "RSVPs come back to you",
   "A budget that adds itself up",
-  "Food list everyone can claim",
-  "Tasks you can actually hand off",
+  "Items anyone can claim",
+  "A to-do list that doesn't slip",
 ];
 
 const steps = [

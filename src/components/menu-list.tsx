@@ -198,15 +198,6 @@ export function MenuList({
     });
   }
 
-  const coverageHint =
-    attendees > 0 && totals.totalServes > 0
-      ? totals.totalServes >= attendees
-        ? `covers ${attendees} confirmed`
-        : `${attendees - totals.totalServes} short of confirmed RSVPs`
-      : attendees > 0
-        ? "set serving counts to track coverage"
-        : "no confirmed attendees yet";
-
   return (
     <div className="space-y-6">
       {/* Summary */}
@@ -218,11 +209,6 @@ export function MenuList({
             </p>
             <p className="mt-1 font-display text-3xl font-bold tracking-tight">
               {totals.dishes}
-            </p>
-            <p className="mt-1 text-xs text-ink-soft">
-              {totals.dishes === 0
-                ? "nothing planned yet"
-                : `${totals.ready} ready · ${totals.dishes - totals.ready} in motion`}
             </p>
           </CardContent>
         </Card>
@@ -243,7 +229,6 @@ export function MenuList({
             >
               {totals.totalServes || "—"}
             </p>
-            <p className="mt-1 text-xs text-ink-soft">{coverageHint}</p>
           </CardContent>
         </Card>
 
@@ -485,7 +470,7 @@ export function MenuList({
                           )}
                         </div>
                         <div
-                          className="flex items-start gap-2"
+                          className="flex items-center gap-2"
                           onClick={(e) => e.stopPropagation()}
                           onKeyDown={(e) => e.stopPropagation()}
                         >
