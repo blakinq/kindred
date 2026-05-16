@@ -29,8 +29,8 @@ export default async function ConfirmationPage({
               <Sparkle className="absolute -right-6 top-2 h-4 w-4 rotate-12 text-terracotta" />
               <div className="text-6xl">🎉</div>
             </div>
-            <p className="font-hand text-2xl text-terracotta">we got it</p>
-            <h1 className="font-display text-3xl font-bold tracking-tight text-balance">
+            <p className="font-hand text-xl text-terracotta md:text-2xl">we got it</p>
+            <h1 className="font-display text-2xl font-bold tracking-tight text-balance md:text-3xl">
               Your reply is in.
             </h1>
             <p className="text-ink-soft">

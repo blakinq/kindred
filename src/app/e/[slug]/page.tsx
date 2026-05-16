@@ -86,11 +86,11 @@ export default async function PublicEventPage({
             </div>
 
             <div>
-              <h1 className="font-display text-4xl font-bold leading-[1.05] tracking-tight md:text-5xl text-balance">
+              <h1 className="font-display text-3xl font-bold leading-[1.05] tracking-tight md:text-5xl text-balance">
                 {event.name}
               </h1>
               {event.event_type && (
-                <p className="mt-2 font-hand text-2xl text-terracotta">
+                <p className="mt-2 font-hand text-xl text-terracotta md:text-2xl">
                   {event.event_type}
                 </p>
               )}
@@ -162,7 +162,7 @@ export default async function PublicEventPage({
           {event.rsvps_closed ? (
             <Card tape="mustard">
               <CardHeader>
-                <CardTitle className="text-2xl">Will you make it?</CardTitle>
+                <CardTitle className="text-xl md:text-2xl">Will you make it?</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="rounded-lg border-2 border-dashed border-rule bg-paper p-5 text-center text-ink-soft">

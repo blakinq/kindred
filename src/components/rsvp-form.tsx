@@ -49,7 +49,7 @@ export function RsvpForm({
     <form action={formAction} className="space-y-8">
       <Card tape="mustard">
         <CardHeader>
-          <CardTitle className="text-2xl">Will you make it?</CardTitle>
+          <CardTitle className="text-xl md:text-2xl">Will you make it?</CardTitle>
           <p className="text-sm text-ink-soft">
             No account needed. Open this link again later to change your reply.
           </p>
