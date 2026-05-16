@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { submitRsvpAction, type RsvpState } from "@/app/e/[slug]/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -43,6 +43,7 @@ export function RsvpForm({
     action,
     undefined,
   );
+  const [name, setName] = useState("");
 
   return (
     <form action={formAction} className="space-y-8">
@@ -90,7 +91,15 @@ export function RsvpForm({
 
           <div className="space-y-1.5">
             <Label htmlFor="name">Your name</Label>
-            <Input id="name" name="name" required autoComplete="name" />
+            <Input
+              id="name"
+              name="name"
+              required
+              autoComplete="name"
+              placeholder="Enter name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
           </div>
 
           <div className="space-y-1.5">
@@ -107,6 +116,7 @@ export function RsvpForm({
               name="email"
               type="email"
               autoComplete="email"
+              placeholder="Enter email address"
               required={emailRequired}
             />
             <p className="text-xs text-ink-soft normal-case tracking-normal">
@@ -150,7 +160,12 @@ export function RsvpForm({
       {foodItems.length > 0 && (
         <Card tape="olive">
           <CardContent className="p-7 md:p-8">
-            <PublicFoodClaim slug={slug} token={token} items={foodItems} />
+            <PublicFoodClaim
+              slug={slug}
+              token={token}
+              items={foodItems}
+              defaultName={name}
+            />
           </CardContent>
         </Card>
       )}

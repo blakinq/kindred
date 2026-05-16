@@ -48,6 +48,7 @@ export default function ForgotPasswordPage() {
                   name="email"
                   type="email"
                   autoComplete="email"
+                  placeholder="Enter email address"
                   required
                 />
               </div>

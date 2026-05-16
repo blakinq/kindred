@@ -358,7 +358,9 @@ export function FoodList({
                               {it.claimed_count} / {it.needed_count} claimed
                             </span>
                             {it.claimed_by_name && (
-                              <span>· by {it.claimed_by_name}</span>
+                              <span className="font-hand text-base text-terracotta-deep">
+                                · by {it.claimed_by_name}
+                              </span>
                             )}
                             {it.estimated_cost_cents != null && (
                               <span>

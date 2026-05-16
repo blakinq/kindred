@@ -44,12 +44,16 @@ export function PublicFoodClaim({
   slug,
   token,
   items,
+  defaultName = "",
 }: {
   slug: string;
   token: string | null;
   items: PublicFoodItem[];
+  defaultName?: string;
 }) {
   const [name, setName] = useState("");
+  const [touched, setTouched] = useState(false);
+  const effectiveName = touched ? name : defaultName;
   const [pending, startTransition] = useTransition();
   const [claimingId, setClaimingId] = useState<string | null>(null);
   const [qtyById, setQtyById] = useState<Record<string, number>>({});
@@ -84,7 +88,8 @@ export function PublicFoodClaim({
   }
 
   function onClaim(item: PublicFoodItem) {
-    if (!name.trim()) {
+    const claimName = effectiveName.trim();
+    if (!claimName) {
       toast.warning("Add your name", "We'll show it next to what you bring.");
       const el = document.getElementById("food-claim-name") as HTMLInputElement | null;
       el?.focus();
@@ -93,7 +98,7 @@ export function PublicFoodClaim({
     const qty = qtyFor(item);
     setClaimingId(item.id);
     startTransition(async () => {
-      const res = await claimPublicFoodItemAction(slug, item.id, name, token, qty);
+      const res = await claimPublicFoodItemAction(slug, item.id, claimName, token, qty);
       setClaimingId(null);
       if (res?.error) {
         toast.error("Couldn't claim", res.error);
@@ -138,12 +143,15 @@ export function PublicFoodClaim({
         <Label htmlFor="food-claim-name">Your name</Label>
         <Input
           id="food-claim-name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          value={effectiveName}
+          onChange={(e) => {
+            setTouched(true);
+            setName(e.target.value);
+          }}
           onKeyDown={(e) => {
             if (e.key === "Enter") e.preventDefault();
           }}
-          placeholder="Jamie Lee"
+          placeholder="Enter name"
           autoComplete="off"
         />
       </div>

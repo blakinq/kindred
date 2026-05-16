@@ -26,11 +26,24 @@ export default function SignupPage() {
           <form action={formAction} className="mt-8 space-y-5">
             <div className="space-y-1.5">
               <Label htmlFor="name">Your name</Label>
-              <Input id="name" name="name" autoComplete="name" required />
+              <Input
+                id="name"
+                name="name"
+                autoComplete="name"
+                placeholder="Enter name"
+                required
+              />
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" name="email" type="email" autoComplete="email" required />
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                placeholder="Enter email address"
+                required
+              />
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="password">Password</Label>

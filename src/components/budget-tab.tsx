@@ -55,6 +55,10 @@ function projectedCents(e: Expense) {
   return e.actual_amount_cents ?? e.estimated_amount_cents ?? 0;
 }
 
+function lineDisplayCents(e: Expense) {
+  return e.estimated_amount_cents ?? e.actual_amount_cents ?? 0;
+}
+
 export function BudgetTab({
   eventId,
   currency,
@@ -84,14 +88,13 @@ export function BudgetTab({
       (sum, e) => sum + (e.actual_amount_cents ?? 0),
       0,
     );
-    const projected = expenses.reduce((sum, e) => sum + projectedCents(e), 0);
-    return { estimated, actual, projected };
+    return { estimated, actual };
   }, [expenses]);
 
   const overBudget =
-    budgetTargetCents != null && totals.projected > budgetTargetCents;
+    budgetTargetCents != null && totals.estimated > budgetTargetCents;
   const remaining =
-    budgetTargetCents == null ? null : budgetTargetCents - totals.projected;
+    budgetTargetCents == null ? null : budgetTargetCents - totals.estimated;
 
   function onAddExpense(formData: FormData) {
     const name = String(formData.get("name") ?? "").trim();
@@ -157,7 +160,7 @@ export function BudgetTab({
         <Card tape="ocean">
           <CardContent className="p-5">
             <p className="font-display text-[11px] font-bold uppercase tracking-[0.16em] text-ink-soft">
-              Projected
+              Estimated
             </p>
             <p
               className={
@@ -165,10 +168,10 @@ export function BudgetTab({
                 (overBudget ? "text-terracotta-deep" : "text-ink")
               }
             >
-              {formatCurrency(totals.projected, currency)}
+              {formatCurrency(totals.estimated, currency)}
             </p>
             <p className="mt-1 text-xs text-ink-soft">
-              Actual when known, otherwise estimated.
+              Summed estimated cost from each expense.
             </p>
           </CardContent>
         </Card>
@@ -314,7 +317,7 @@ export function BudgetTab({
           </div>
           <div className="space-y-1 sm:col-span-2">
             <Label htmlFor="e-paid-by">Paid by (optional)</Label>
-            <Input id="e-paid-by" name="paid_by_name" placeholder="Jamie" />
+            <Input id="e-paid-by" name="paid_by_name" placeholder="Enter name" />
           </div>
           <div className="space-y-1 sm:col-span-2">
             <Label htmlFor="e-notes">Notes (optional)</Label>
