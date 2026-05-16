@@ -485,73 +485,76 @@ function EditExpenseDialog({
       onClose={pending ? () => {} : onClose}
       tape="ocean"
       className="max-w-2xl"
+      scrollBody
     >
       <DialogHeader>
         <DialogTitle>Edit expense</DialogTitle>
       </DialogHeader>
-      <form action={onSubmit} className="mt-5 grid gap-3 sm:grid-cols-2">
-        <div className="space-y-1 sm:col-span-2">
-          <Label htmlFor="ee-name">Name</Label>
-          <Input id="ee-name" name="name" defaultValue={expense.name} required />
+      <form action={onSubmit} className="mt-5 flex min-h-0 flex-1 flex-col">
+        <div className="-mr-2 grid min-h-0 flex-1 gap-3 overflow-y-auto pr-2 sm:grid-cols-2">
+          <div className="space-y-1 sm:col-span-2">
+            <Label htmlFor="ee-name">Name</Label>
+            <Input id="ee-name" name="name" defaultValue={expense.name} required />
+          </div>
+          <div className="space-y-1">
+            <Label htmlFor="ee-category">Category</Label>
+            <Dropdown
+              id="ee-category"
+              name="category"
+              defaultValue={expense.category}
+              options={CATEGORY_OPTIONS}
+            />
+          </div>
+          <div className="space-y-1">
+            <Label htmlFor="ee-status">Status</Label>
+            <Dropdown
+              id="ee-status"
+              name="payment_status"
+              defaultValue={expense.payment_status}
+              options={PAYMENT_OPTIONS}
+            />
+          </div>
+          <div className="space-y-1">
+            <Label htmlFor="ee-est">Estimated</Label>
+            <Input
+              id="ee-est"
+              name="estimated_amount"
+              type="text"
+              inputMode="decimal"
+              defaultValue={centsToInput(expense.estimated_amount_cents)}
+              placeholder="0.00"
+            />
+          </div>
+          <div className="space-y-1">
+            <Label htmlFor="ee-actual">Actual</Label>
+            <Input
+              id="ee-actual"
+              name="actual_amount"
+              type="text"
+              inputMode="decimal"
+              defaultValue={centsToInput(expense.actual_amount_cents)}
+              placeholder="0.00"
+            />
+          </div>
+          <div className="space-y-1 sm:col-span-2">
+            <Label htmlFor="ee-paid-by">Paid by</Label>
+            <Input
+              id="ee-paid-by"
+              name="paid_by_name"
+              defaultValue={expense.paid_by_name ?? ""}
+            />
+          </div>
+          <div className="space-y-1 sm:col-span-2">
+            <Label htmlFor="ee-notes">Notes</Label>
+            <Textarea
+              id="ee-notes"
+              name="notes"
+              rows={2}
+              defaultValue={expense.notes ?? ""}
+            />
+          </div>
         </div>
-        <div className="space-y-1">
-          <Label htmlFor="ee-category">Category</Label>
-          <Dropdown
-            id="ee-category"
-            name="category"
-            defaultValue={expense.category}
-            options={CATEGORY_OPTIONS}
-          />
-        </div>
-        <div className="space-y-1">
-          <Label htmlFor="ee-status">Status</Label>
-          <Dropdown
-            id="ee-status"
-            name="payment_status"
-            defaultValue={expense.payment_status}
-            options={PAYMENT_OPTIONS}
-          />
-        </div>
-        <div className="space-y-1">
-          <Label htmlFor="ee-est">Estimated</Label>
-          <Input
-            id="ee-est"
-            name="estimated_amount"
-            type="text"
-            inputMode="decimal"
-            defaultValue={centsToInput(expense.estimated_amount_cents)}
-            placeholder="0.00"
-          />
-        </div>
-        <div className="space-y-1">
-          <Label htmlFor="ee-actual">Actual</Label>
-          <Input
-            id="ee-actual"
-            name="actual_amount"
-            type="text"
-            inputMode="decimal"
-            defaultValue={centsToInput(expense.actual_amount_cents)}
-            placeholder="0.00"
-          />
-        </div>
-        <div className="space-y-1 sm:col-span-2">
-          <Label htmlFor="ee-paid-by">Paid by</Label>
-          <Input
-            id="ee-paid-by"
-            name="paid_by_name"
-            defaultValue={expense.paid_by_name ?? ""}
-          />
-        </div>
-        <div className="space-y-1 sm:col-span-2">
-          <Label htmlFor="ee-notes">Notes</Label>
-          <Textarea
-            id="ee-notes"
-            name="notes"
-            rows={2}
-            defaultValue={expense.notes ?? ""}
-          />
-        </div>
-        <DialogFooter className="sm:col-span-2">
+        <DialogFooter>
           <Button type="button" variant="ghost" onClick={onClose} disabled={pending}>
             Cancel
           </Button>

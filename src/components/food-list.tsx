@@ -481,90 +481,93 @@ function EditFoodDialog({
       onClose={pending ? () => {} : onClose}
       tape="ocean"
       className="max-w-2xl"
+      scrollBody
     >
       <DialogHeader>
         <DialogTitle>Edit item</DialogTitle>
       </DialogHeader>
-      <form action={onSubmit} className="mt-5 grid gap-3 sm:grid-cols-2">
-        <div className="space-y-1 sm:col-span-2">
-          <Label htmlFor="ef-name">Name</Label>
-          <Input id="ef-name" name="name" defaultValue={item.name} required />
-        </div>
-        <div className="space-y-1">
-          <Label htmlFor="ef-category">Category</Label>
-          <Dropdown
-            id="ef-category"
-            name="category"
-            defaultValue={item.category}
-            options={CATEGORY_OPTIONS}
-          />
-        </div>
-        <div className="space-y-1">
-          <Label htmlFor="ef-status">Status</Label>
-          <Dropdown
-            id="ef-status"
-            name="status"
-            defaultValue={item.status}
-            options={STATUS_OPTIONS}
-          />
-        </div>
-        <div className="space-y-1">
-          <Label htmlFor="ef-qty">Quantity</Label>
-          <Input
-            id="ef-qty"
-            name="quantity"
-            type="text"
-            inputMode="decimal"
-            defaultValue={item.quantity ?? ""}
-          />
-        </div>
-        <div className="space-y-1">
-          <Label htmlFor="ef-unit">Unit</Label>
-          <Input id="ef-unit" name="unit" defaultValue={item.unit ?? ""} />
-        </div>
-        <div className="space-y-1">
-          <Label htmlFor="ef-needed">How many needed</Label>
-          <Input
-            id="ef-needed"
-            name="needed_count"
-            type="number"
-            min={1}
-            defaultValue={item.needed_count}
-          />
-        </div>
-        <div className="space-y-1">
-          <Label htmlFor="ef-est">Est. cost</Label>
-          <Input
-            id="ef-est"
-            name="estimated_cost"
-            type="text"
-            inputMode="decimal"
-            defaultValue={centsToInput(item.estimated_cost_cents)}
-          />
-        </div>
-        <div className="sm:col-span-2">
-          <label className="flex cursor-pointer items-center gap-3 rounded-xl border-2 border-ink/85 bg-paper-light px-4 py-3 transition-colors hover:bg-paper-deep/40">
-            <input
-              type="checkbox"
-              name="is_guest_claimable"
-              defaultChecked={item.is_guest_claimable}
-              className="h-4 w-4 accent-terracotta"
+      <form action={onSubmit} className="mt-5 flex min-h-0 flex-1 flex-col">
+        <div className="-mr-2 grid min-h-0 flex-1 gap-3 overflow-y-auto pr-2 sm:grid-cols-2">
+          <div className="space-y-1 sm:col-span-2">
+            <Label htmlFor="ef-name">Name</Label>
+            <Input id="ef-name" name="name" defaultValue={item.name} required />
+          </div>
+          <div className="space-y-1">
+            <Label htmlFor="ef-category">Category</Label>
+            <Dropdown
+              id="ef-category"
+              name="category"
+              defaultValue={item.category}
+              options={CATEGORY_OPTIONS}
             />
-            <span className="font-display text-sm font-bold">
-              Guests can claim this
-            </span>
-          </label>
+          </div>
+          <div className="space-y-1">
+            <Label htmlFor="ef-status">Status</Label>
+            <Dropdown
+              id="ef-status"
+              name="status"
+              defaultValue={item.status}
+              options={STATUS_OPTIONS}
+            />
+          </div>
+          <div className="space-y-1">
+            <Label htmlFor="ef-qty">Quantity</Label>
+            <Input
+              id="ef-qty"
+              name="quantity"
+              type="text"
+              inputMode="decimal"
+              defaultValue={item.quantity ?? ""}
+            />
+          </div>
+          <div className="space-y-1">
+            <Label htmlFor="ef-unit">Unit</Label>
+            <Input id="ef-unit" name="unit" defaultValue={item.unit ?? ""} />
+          </div>
+          <div className="space-y-1">
+            <Label htmlFor="ef-needed">How many needed</Label>
+            <Input
+              id="ef-needed"
+              name="needed_count"
+              type="number"
+              min={1}
+              defaultValue={item.needed_count}
+            />
+          </div>
+          <div className="space-y-1">
+            <Label htmlFor="ef-est">Est. cost</Label>
+            <Input
+              id="ef-est"
+              name="estimated_cost"
+              type="text"
+              inputMode="decimal"
+              defaultValue={centsToInput(item.estimated_cost_cents)}
+            />
+          </div>
+          <div className="sm:col-span-2">
+            <label className="flex cursor-pointer items-center gap-3 rounded-xl border-2 border-ink/85 bg-paper-light px-4 py-3 transition-colors hover:bg-paper-deep/40">
+              <input
+                type="checkbox"
+                name="is_guest_claimable"
+                defaultChecked={item.is_guest_claimable}
+                className="h-4 w-4 accent-terracotta"
+              />
+              <span className="font-display text-sm font-bold">
+                Guests can claim this
+              </span>
+            </label>
+          </div>
+          <div className="space-y-1 sm:col-span-2">
+            <Label htmlFor="ef-notes">Notes</Label>
+            <Textarea
+              id="ef-notes"
+              name="notes"
+              rows={2}
+              defaultValue={item.notes ?? ""}
+            />
+          </div>
         </div>
-        <div className="space-y-1 sm:col-span-2">
-          <Label htmlFor="ef-notes">Notes</Label>
-          <Textarea
-            id="ef-notes"
-            name="notes"
-            rows={2}
-            defaultValue={item.notes ?? ""}
-          />
-        </div>
-        <DialogFooter className="sm:col-span-2">
+        <DialogFooter>
           <Button type="button" variant="ghost" onClick={onClose} disabled={pending}>
             Cancel
           </Button>

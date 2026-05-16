@@ -718,91 +718,94 @@ function EditMenuDialog({
       onClose={pending ? () => {} : onClose}
       tape="ocean"
       className="max-w-2xl"
+      scrollBody
     >
       <DialogHeader>
         <DialogTitle>Edit dish</DialogTitle>
       </DialogHeader>
-      <form action={onSubmit} className="mt-5 grid gap-3 sm:grid-cols-2">
-        <div className="space-y-1 sm:col-span-2">
-          <Label htmlFor="em-name">Dish name</Label>
-          <Input
-            id="em-name"
-            name="name"
-            defaultValue={item.name}
-            required
-          />
+      <form action={onSubmit} className="mt-5 flex min-h-0 flex-1 flex-col">
+        <div className="-mr-2 grid min-h-0 flex-1 gap-3 overflow-y-auto pr-2 sm:grid-cols-2">
+          <div className="space-y-1 sm:col-span-2">
+            <Label htmlFor="em-name">Dish name</Label>
+            <Input
+              id="em-name"
+              name="name"
+              defaultValue={item.name}
+              required
+            />
+          </div>
+          <div className="space-y-1">
+            <Label htmlFor="em-course">Course</Label>
+            <Dropdown
+              id="em-course"
+              name="course"
+              defaultValue={item.course}
+              options={COURSE_OPTIONS}
+            />
+          </div>
+          <div className="space-y-1">
+            <Label htmlFor="em-status">Status</Label>
+            <Dropdown
+              id="em-status"
+              name="status"
+              defaultValue={item.status}
+              options={STATUS_OPTIONS}
+            />
+          </div>
+          <div className="space-y-1">
+            <Label htmlFor="em-serves">Serves</Label>
+            <Input
+              id="em-serves"
+              name="serves"
+              type="number"
+              min={1}
+              defaultValue={item.serves ?? ""}
+            />
+          </div>
+          <div className="space-y-1">
+            <Label htmlFor="em-prep">Prep (min)</Label>
+            <Input
+              id="em-prep"
+              name="prep_time_minutes"
+              type="number"
+              min={0}
+              defaultValue={item.prep_time_minutes ?? ""}
+            />
+          </div>
+          <div className="space-y-1">
+            <Label htmlFor="em-cook">Cook (min)</Label>
+            <Input
+              id="em-cook"
+              name="cook_time_minutes"
+              type="number"
+              min={0}
+              defaultValue={item.cook_time_minutes ?? ""}
+            />
+          </div>
+          <div className="space-y-1">
+            <Label htmlFor="em-url">Recipe link</Label>
+            <Input
+              id="em-url"
+              name="recipe_url"
+              type="url"
+              defaultValue={item.recipe_url ?? ""}
+            />
+          </div>
+          <div className="space-y-1.5 sm:col-span-2">
+            <Label>Dietary tags</Label>
+            <DietaryChips value={tags} onChange={setTags} />
+          </div>
+          <div className="space-y-1 sm:col-span-2">
+            <Label htmlFor="em-notes">Notes</Label>
+            <Textarea
+              id="em-notes"
+              name="notes"
+              rows={3}
+              defaultValue={item.notes ?? ""}
+            />
+          </div>
         </div>
-        <div className="space-y-1">
-          <Label htmlFor="em-course">Course</Label>
-          <Dropdown
-            id="em-course"
-            name="course"
-            defaultValue={item.course}
-            options={COURSE_OPTIONS}
-          />
-        </div>
-        <div className="space-y-1">
-          <Label htmlFor="em-status">Status</Label>
-          <Dropdown
-            id="em-status"
-            name="status"
-            defaultValue={item.status}
-            options={STATUS_OPTIONS}
-          />
-        </div>
-        <div className="space-y-1">
-          <Label htmlFor="em-serves">Serves</Label>
-          <Input
-            id="em-serves"
-            name="serves"
-            type="number"
-            min={1}
-            defaultValue={item.serves ?? ""}
-          />
-        </div>
-        <div className="space-y-1">
-          <Label htmlFor="em-prep">Prep (min)</Label>
-          <Input
-            id="em-prep"
-            name="prep_time_minutes"
-            type="number"
-            min={0}
-            defaultValue={item.prep_time_minutes ?? ""}
-          />
-        </div>
-        <div className="space-y-1">
-          <Label htmlFor="em-cook">Cook (min)</Label>
-          <Input
-            id="em-cook"
-            name="cook_time_minutes"
-            type="number"
-            min={0}
-            defaultValue={item.cook_time_minutes ?? ""}
-          />
-        </div>
-        <div className="space-y-1">
-          <Label htmlFor="em-url">Recipe link</Label>
-          <Input
-            id="em-url"
-            name="recipe_url"
-            type="url"
-            defaultValue={item.recipe_url ?? ""}
-          />
-        </div>
-        <div className="space-y-1.5 sm:col-span-2">
-          <Label>Dietary tags</Label>
-          <DietaryChips value={tags} onChange={setTags} />
-        </div>
-        <div className="space-y-1 sm:col-span-2">
-          <Label htmlFor="em-notes">Notes</Label>
-          <Textarea
-            id="em-notes"
-            name="notes"
-            rows={3}
-            defaultValue={item.notes ?? ""}
-          />
-        </div>
-        <DialogFooter className="sm:col-span-2">
+        <DialogFooter>
           <Button
             type="button"
             variant="ghost"
