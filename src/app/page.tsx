@@ -283,7 +283,7 @@ export default function HomePage() {
             <span className="font-hand text-2xl text-terracotta">a tiny planning tool</span>
             <Squiggle className="h-2 w-12 text-terracotta" />
           </p>
-          <h1 className="font-display text-4xl font-bold leading-[1.02] tracking-tight text-balance md:text-6xl">
+          <h1 className="font-display text-5xl font-bold leading-[1.02] tracking-tight text-balance md:text-7xl">
             Plan dinners.
             <br />
             Plan birthdays.
