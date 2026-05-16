@@ -59,13 +59,11 @@ export function BudgetTab({
   eventId,
   currency,
   budgetTargetCents,
-  attendees,
   expenses,
 }: {
   eventId: string;
   currency: string;
   budgetTargetCents: number | null;
-  attendees: number;
   expenses: Expense[];
 }) {
   const [pending, startTransition] = useTransition();
@@ -94,7 +92,6 @@ export function BudgetTab({
     budgetTargetCents != null && totals.projected > budgetTargetCents;
   const remaining =
     budgetTargetCents == null ? null : budgetTargetCents - totals.projected;
-  const perPerson = attendees > 0 ? Math.round(totals.projected / attendees) : null;
 
   function onAddExpense(formData: FormData) {
     const name = String(formData.get("name") ?? "").trim();
@@ -179,15 +176,13 @@ export function BudgetTab({
         <Card tape="mustard">
           <CardContent className="p-5">
             <p className="font-display text-[11px] font-bold uppercase tracking-[0.16em] text-ink-soft">
-              Per attendee
+              Actual cost
             </p>
             <p className="mt-1 font-display text-3xl font-bold tracking-tight">
-              {perPerson != null ? formatCurrency(perPerson, currency) : "—"}
+              {formatCurrency(totals.actual, currency)}
             </p>
             <p className="mt-1 text-xs text-ink-soft">
-              {attendees > 0
-                ? `${attendees} confirmed attending`
-                : "No confirmed attendees yet"}
+              Confirmed spend so far.
             </p>
           </CardContent>
         </Card>

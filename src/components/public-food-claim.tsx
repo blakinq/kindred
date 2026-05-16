@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState, useTransition } from "react";
-import { ShoppingBasket, Check } from "lucide-react";
+import { ShoppingBasket, Check, Minus, Plus } from "lucide-react";
 import { claimPublicFoodItemAction } from "@/app/e/[slug]/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,6 +14,18 @@ import {
   type FoodCategory,
   type FoodStatus,
 } from "@/lib/types";
+
+function dedupeNames(raw: string): string {
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const part of raw.split(",")) {
+    const n = part.trim();
+    if (!n || seen.has(n)) continue;
+    seen.add(n);
+    out.push(n);
+  }
+  return out.join(", ");
+}
 
 export type PublicFoodItem = {
   id: string;
@@ -40,6 +52,7 @@ export function PublicFoodClaim({
   const [name, setName] = useState("");
   const [pending, startTransition] = useTransition();
   const [claimingId, setClaimingId] = useState<string | null>(null);
+  const [qtyById, setQtyById] = useState<Record<string, number>>({});
 
   const grouped = useMemo(() => {
     const map = new Map<FoodCategory, PublicFoodItem[]>();
@@ -53,6 +66,23 @@ export function PublicFoodClaim({
     );
   }, [items]);
 
+  function remainingFor(item: PublicFoodItem) {
+    return Math.max(0, item.needed_count - item.claimed_count);
+  }
+
+  function qtyFor(item: PublicFoodItem) {
+    const remaining = remainingFor(item);
+    const raw = qtyById[item.id];
+    if (raw == null) return Math.min(1, remaining);
+    return Math.min(Math.max(1, raw), Math.max(1, remaining));
+  }
+
+  function setQty(item: PublicFoodItem, next: number) {
+    const remaining = remainingFor(item);
+    const clamped = Math.min(Math.max(1, Math.floor(next || 1)), Math.max(1, remaining));
+    setQtyById((m) => ({ ...m, [item.id]: clamped }));
+  }
+
   function onClaim(item: PublicFoodItem) {
     if (!name.trim()) {
       toast.warning("Add your name", "We'll show it next to what you bring.");
@@ -60,14 +90,21 @@ export function PublicFoodClaim({
       el?.focus();
       return;
     }
+    const qty = qtyFor(item);
     setClaimingId(item.id);
     startTransition(async () => {
-      const res = await claimPublicFoodItemAction(slug, item.id, name, token);
+      const res = await claimPublicFoodItemAction(slug, item.id, name, token, qty);
       setClaimingId(null);
       if (res?.error) {
         toast.error("Couldn't claim", res.error);
       } else {
-        toast.success(`Thanks for bringing ${item.name}!`, "The host will see your name.");
+        const unitSummary = qty > 1 ? `${qty} × ${item.name}` : item.name;
+        toast.success(`Thanks for bringing ${unitSummary}!`, "The host will see your name.");
+        setQtyById((m) => {
+          const next = { ...m };
+          delete next[item.id];
+          return next;
+        });
       }
     });
   }
@@ -93,7 +130,7 @@ export function PublicFoodClaim({
             : `${unclaimedCount} thing${unclaimedCount === 1 ? "" : "s"} still need a buddy`}
         </p>
         <p className="mt-1 text-sm text-ink-soft">
-          Pick anything that says "needs someone." Put your name in below and tap claim.
+          Pick anything that says "needs someone." Put your name in below, dial in how many, then tap claim.
         </p>
       </div>
 
@@ -123,7 +160,10 @@ export function PublicFoodClaim({
             <ul className="space-y-2">
               {list.map((it) => {
                 const claimedFull = it.claimed_count >= it.needed_count;
+                const remaining = remainingFor(it);
+                const qty = qtyFor(it);
                 const isClaiming = claimingId === it.id && pending;
+                const canStep = !claimedFull && remaining > 1;
                 return (
                   <li
                     key={it.id}
@@ -160,7 +200,7 @@ export function PublicFoodClaim({
                         )}
                         {it.claimed_by_name && (
                           <span className="font-hand text-base text-terracotta-deep">
-                            — {it.claimed_by_name}
+                            — {dedupeNames(it.claimed_by_name)}
                           </span>
                         )}
                       </div>
@@ -173,15 +213,56 @@ export function PublicFoodClaim({
                         <Check className="h-3 w-3" /> covered
                       </Badge>
                     ) : (
-                      <Button
-                        type="button"
-                        size="sm"
-                        variant="outline"
-                        onClick={() => onClaim(it)}
-                        disabled={isClaiming || pending}
-                      >
-                        {isClaiming ? "Claiming…" : "I'll bring it"}
-                      </Button>
+                      <div className="flex items-center gap-2">
+                        <div
+                          className={cn(
+                            "inline-flex items-center rounded-xl border-2 border-ink/85 bg-paper-light",
+                            !canStep && "opacity-60",
+                          )}
+                          role="group"
+                          aria-label={`Quantity for ${it.name}`}
+                        >
+                          <button
+                            type="button"
+                            onClick={() => setQty(it, qty - 1)}
+                            disabled={!canStep || qty <= 1 || isClaiming}
+                            aria-label="Decrease quantity"
+                            className="inline-flex h-8 w-8 items-center justify-center rounded-l-[10px] text-ink transition-colors hover:bg-paper-deep disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:bg-paper-deep"
+                          >
+                            <Minus className="h-3.5 w-3.5" />
+                          </button>
+                          <input
+                            type="text"
+                            inputMode="numeric"
+                            value={qty}
+                            onChange={(e) => {
+                              const n = parseInt(e.target.value.replace(/[^0-9]/g, ""), 10);
+                              setQty(it, Number.isFinite(n) ? n : 1);
+                            }}
+                            disabled={!canStep || isClaiming}
+                            aria-label={`Units of ${it.name} to claim`}
+                            className="h-8 w-9 border-x-2 border-ink/85 bg-paper-light text-center text-sm font-display font-bold tabular-nums text-ink focus-visible:outline-none focus-visible:bg-paper-deep disabled:cursor-not-allowed"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setQty(it, qty + 1)}
+                            disabled={!canStep || qty >= remaining || isClaiming}
+                            aria-label="Increase quantity"
+                            className="inline-flex h-8 w-8 items-center justify-center rounded-r-[10px] text-ink transition-colors hover:bg-paper-deep disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:bg-paper-deep"
+                          >
+                            <Plus className="h-3.5 w-3.5" />
+                          </button>
+                        </div>
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="outline"
+                          onClick={() => onClaim(it)}
+                          disabled={isClaiming || pending}
+                        >
+                          {isClaiming ? "Claiming…" : "I'll bring it"}
+                        </Button>
+                      </div>
                     )}
                   </li>
                 );

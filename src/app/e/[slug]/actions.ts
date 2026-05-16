@@ -12,9 +12,11 @@ export async function claimPublicFoodItemAction(
   itemId: string,
   guestName: string,
   token: string | null,
+  quantity: number = 1,
 ): Promise<{ error?: string } | undefined> {
   const name = guestName.trim();
   if (!name) return { error: "Type your name first." };
+  const qty = Math.max(1, Math.floor(Number(quantity) || 1));
 
   const supabase = await createClient();
   const { error } = await supabase.rpc("claim_public_food_item", {
@@ -22,6 +24,7 @@ export async function claimPublicFoodItemAction(
     p_item_id: itemId,
     p_guest_name: name,
     p_invite_token: token ?? "",
+    p_quantity: qty,
   });
 
   if (error) return { error: error.message };

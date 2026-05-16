@@ -188,7 +188,7 @@ export function GuestList({
         <form id="add-guest-form" action={onAdd} className="mt-5 space-y-3">
           <div className="space-y-1">
             <Label htmlFor="g-name">Name</Label>
-            <Input id="g-name" name="name" placeholder="Jamie Lee" required />
+            <Input id="g-name" name="name" placeholder="enter name" required />
           </div>
           <div className="grid gap-3 sm:grid-cols-[1fr_180px]">
             <div className="space-y-1">
@@ -197,7 +197,7 @@ export function GuestList({
                 id="g-email"
                 name="email"
                 type="email"
-                placeholder="jamie@…"
+                placeholder="enter email address"
               />
             </div>
             <div className="space-y-1">

@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState, useTransition } from "react";
-import { Check, ListChecks, Pencil, Trash2 } from "lucide-react";
+import { Calendar, Check, ListChecks, Pencil, Trash2 } from "lucide-react";
 import {
   addTaskAction,
   deleteTaskAction,
@@ -257,13 +257,9 @@ export function TaskList({
               options={STATUS_OPTIONS}
             />
           </div>
-          <div className="space-y-1">
+          <div className="space-y-1 sm:col-span-2">
             <Label htmlFor="t-due">Due date</Label>
-            <DateInput id="t-due" name="due_date" />
-          </div>
-          <div className="space-y-1">
-            <Label htmlFor="t-assignee">Assigned to (optional)</Label>
-            <Input id="t-assignee" name="assignee_name" placeholder="Jamie" />
+            <DateInput id="t-due" name="due_date" icon={Calendar} />
           </div>
           <div className="space-y-1 sm:col-span-2">
             <Label htmlFor="t-desc">Notes (optional)</Label>
@@ -373,7 +369,6 @@ export function TaskList({
                           {formatDue(t.due_date)}
                         </span>
                       )}
-                      {t.assignee_name && <span>· {t.assignee_name}</span>}
                     </div>
                     {t.description && (
                       <p className="mt-1 font-hand text-base text-terracotta-deep">
@@ -516,20 +511,13 @@ function EditTaskDialog({
             options={STATUS_OPTIONS}
           />
         </div>
-        <div className="space-y-1">
+        <div className="space-y-1 sm:col-span-2">
           <Label htmlFor="et-due">Due date</Label>
           <DateInput
             id="et-due"
             name="due_date"
+            icon={Calendar}
             defaultValue={task.due_date ?? ""}
-          />
-        </div>
-        <div className="space-y-1">
-          <Label htmlFor="et-assignee">Assigned to</Label>
-          <Input
-            id="et-assignee"
-            name="assignee_name"
-            defaultValue={task.assignee_name ?? ""}
           />
         </div>
         <div className="space-y-1 sm:col-span-2">

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { createPortal } from "react-dom";
 import { Check, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -26,6 +27,8 @@ type DropdownProps = {
   "aria-label"?: string;
 };
 
+type PanelRect = { top: number; left: number; width: number };
+
 export function Dropdown({
   options,
   value,
@@ -46,6 +49,8 @@ export function Dropdown({
 
   const [open, setOpen] = React.useState(false);
   const [activeIdx, setActiveIdx] = React.useState<number>(-1);
+  const [mounted, setMounted] = React.useState(false);
+  const [rect, setRect] = React.useState<PanelRect | null>(null);
 
   const rootRef = React.useRef<HTMLDivElement>(null);
   const buttonRef = React.useRef<HTMLButtonElement>(null);
@@ -53,10 +58,40 @@ export function Dropdown({
 
   const selected = options.find((o) => o.value === current);
 
+  React.useEffect(() => setMounted(true), []);
+
+  const updateRect = React.useCallback(() => {
+    const btn = buttonRef.current;
+    if (!btn) return;
+    const r = btn.getBoundingClientRect();
+    setRect({ top: r.bottom + 8, left: r.left, width: r.width });
+  }, []);
+
+  React.useLayoutEffect(() => {
+    if (!open) return;
+    updateRect();
+  }, [open, updateRect]);
+
+  React.useEffect(() => {
+    if (!open) return;
+    function onScrollOrResize() {
+      updateRect();
+    }
+    window.addEventListener("scroll", onScrollOrResize, true);
+    window.addEventListener("resize", onScrollOrResize);
+    return () => {
+      window.removeEventListener("scroll", onScrollOrResize, true);
+      window.removeEventListener("resize", onScrollOrResize);
+    };
+  }, [open, updateRect]);
+
   React.useEffect(() => {
     if (!open) return;
     function onMouseDown(e: MouseEvent) {
-      if (!rootRef.current?.contains(e.target as Node)) setOpen(false);
+      const target = e.target as Node;
+      if (rootRef.current?.contains(target)) return;
+      if (listRef.current?.contains(target)) return;
+      setOpen(false);
     }
     document.addEventListener("mousedown", onMouseDown);
     return () => document.removeEventListener("mousedown", onMouseDown);
@@ -141,6 +176,68 @@ export function Dropdown({
     size === "sm" ? "h-8 px-3 text-xs" : "h-11 px-4 text-[15px]";
   const sizeChevron = size === "sm" ? "h-3 w-3" : "h-3.5 w-3.5";
 
+  const panel = open && mounted && rect ? (
+    <ul
+      ref={listRef}
+      role="listbox"
+      data-lenis-prevent
+      aria-activedescendant={
+        activeIdx >= 0 ? `${id ?? name ?? "dd"}-opt-${activeIdx}` : undefined
+      }
+      style={{
+        position: "fixed",
+        top: rect.top,
+        left: rect.left,
+        width: rect.width,
+      }}
+      className={cn(
+        "z-[300] max-h-64 origin-top overflow-auto overscroll-contain rounded-xl border-2 border-ink/85 bg-paper-light p-1.5 shadow-stamp-lg",
+        "animate-fade-up",
+        panelClassName,
+      )}
+    >
+      {options.map((opt, i) => {
+        const isSelected = opt.value === current;
+        const isActive = i === activeIdx;
+        return (
+          <li key={opt.value}>
+            <button
+              type="button"
+              role="option"
+              id={`${id ?? name ?? "dd"}-opt-${i}`}
+              data-idx={i}
+              aria-selected={isSelected}
+              disabled={opt.disabled}
+              onMouseEnter={() => !opt.disabled && setActiveIdx(i)}
+              onClick={() => !opt.disabled && commit(opt.value)}
+              className={cn(
+                "flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2 text-left text-sm transition-colors",
+                isActive && !opt.disabled && "bg-mustard/30",
+                isSelected && "font-display font-bold text-terracotta-deep",
+                opt.disabled && "cursor-not-allowed opacity-50",
+              )}
+            >
+              <span className="flex-1 truncate">
+                {opt.label}
+                {opt.hint && (
+                  <span className="ml-1.5 text-xs font-normal text-ink-soft">
+                    {opt.hint}
+                  </span>
+                )}
+              </span>
+              {isSelected && (
+                <Check
+                  className="h-3.5 w-3.5 shrink-0 text-terracotta-deep"
+                  aria-hidden
+                />
+              )}
+            </button>
+          </li>
+        );
+      })}
+    </ul>
+  ) : null;
+
   return (
     <div ref={rootRef} className={cn("relative", className)}>
       <button
@@ -174,61 +271,7 @@ export function Dropdown({
         />
       </button>
 
-      {open && (
-        <ul
-          ref={listRef}
-          role="listbox"
-          data-lenis-prevent
-          aria-activedescendant={
-            activeIdx >= 0 ? `${id ?? name ?? "dd"}-opt-${activeIdx}` : undefined
-          }
-          className={cn(
-            "absolute left-0 right-0 z-50 mt-2 max-h-64 origin-top overflow-auto overscroll-contain rounded-xl border-2 border-ink/85 bg-paper-light p-1.5 shadow-stamp-lg",
-            "animate-fade-up",
-            panelClassName,
-          )}
-        >
-          {options.map((opt, i) => {
-            const isSelected = opt.value === current;
-            const isActive = i === activeIdx;
-            return (
-              <li key={opt.value}>
-                <button
-                  type="button"
-                  role="option"
-                  id={`${id ?? name ?? "dd"}-opt-${i}`}
-                  data-idx={i}
-                  aria-selected={isSelected}
-                  disabled={opt.disabled}
-                  onMouseEnter={() => !opt.disabled && setActiveIdx(i)}
-                  onClick={() => !opt.disabled && commit(opt.value)}
-                  className={cn(
-                    "flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2 text-left text-sm transition-colors",
-                    isActive && !opt.disabled && "bg-mustard/30",
-                    isSelected && "font-display font-bold text-terracotta-deep",
-                    opt.disabled && "cursor-not-allowed opacity-50",
-                  )}
-                >
-                  <span className="flex-1 truncate">
-                    {opt.label}
-                    {opt.hint && (
-                      <span className="ml-1.5 text-xs font-normal text-ink-soft">
-                        {opt.hint}
-                      </span>
-                    )}
-                  </span>
-                  {isSelected && (
-                    <Check
-                      className="h-3.5 w-3.5 shrink-0 text-terracotta-deep"
-                      aria-hidden
-                    />
-                  )}
-                </button>
-              </li>
-            );
-          })}
-        </ul>
-      )}
+      {panel && createPortal(panel, document.body)}
 
       {name && <input type="hidden" name={name} value={current} />}
     </div>

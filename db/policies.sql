@@ -326,14 +326,20 @@ grant execute on function public.get_public_food_items(text) to anon, authentica
 
 -- ============================================================
 -- PUBLIC RPC: claim_public_food_item
--- Increments claimed_count by 1 and appends the claimer's name.
+-- Increments claimed_count by p_quantity (default 1) and appends the
+-- claimer's name to claimed_by_name (deduped — a single claimer's name
+-- is never repeated even when they claim multiple units).
 -- Row is locked while updating so simultaneous claims can't overflow.
 -- ============================================================
+-- Drop the older 4-arg signature so PostgREST resolves the new one cleanly.
+drop function if exists public.claim_public_food_item(text, uuid, text, text);
+
 create or replace function public.claim_public_food_item(
   p_slug text,
   p_item_id uuid,
   p_guest_name text,
-  p_invite_token text
+  p_invite_token text,
+  p_quantity integer default 1
 )
 returns uuid
 language plpgsql
@@ -345,12 +351,19 @@ declare
   v_item public.food_supply_items%rowtype;
   v_guest_id uuid;
   v_name text;
+  v_qty integer;
   v_new_count integer;
   v_new_name text;
+  v_existing_names text[];
 begin
   v_name := nullif(btrim(p_guest_name), '');
   if v_name is null then
     raise exception 'Name is required to claim an item';
+  end if;
+
+  v_qty := coalesce(p_quantity, 1);
+  if v_qty < 1 then
+    raise exception 'Quantity must be at least 1';
   end if;
 
   select * into v_event from public.events
@@ -373,18 +386,28 @@ begin
   if v_item.claimed_count >= v_item.needed_count then
     raise exception 'Already fully claimed';
   end if;
+  if v_item.claimed_count + v_qty > v_item.needed_count then
+    raise exception 'Only % left to claim', v_item.needed_count - v_item.claimed_count;
+  end if;
 
   if p_invite_token is not null and length(p_invite_token) > 0 then
     select id into v_guest_id from public.guests
       where invite_token = p_invite_token and event_id = v_event.id;
   end if;
 
-  v_new_count := v_item.claimed_count + 1;
-  v_new_name := case
-    when v_item.claimed_by_name is null or length(btrim(v_item.claimed_by_name)) = 0
-      then v_name
-    else v_item.claimed_by_name || ', ' || v_name
-  end;
+  v_new_count := v_item.claimed_count + v_qty;
+
+  -- Dedupe names: split existing names on ", ", add v_name only if absent
+  if v_item.claimed_by_name is null or length(btrim(v_item.claimed_by_name)) = 0 then
+    v_new_name := v_name;
+  else
+    v_existing_names := string_to_array(v_item.claimed_by_name, ', ');
+    if v_name = any(v_existing_names) then
+      v_new_name := v_item.claimed_by_name;
+    else
+      v_new_name := v_item.claimed_by_name || ', ' || v_name;
+    end if;
+  end if;
 
   update public.food_supply_items
     set claimed_count = v_new_count,
@@ -400,4 +423,4 @@ begin
 end;
 $$;
 
-grant execute on function public.claim_public_food_item(text, uuid, text, text) to anon, authenticated;
+grant execute on function public.claim_public_food_item(text, uuid, text, text, integer) to anon, authenticated;

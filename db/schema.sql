@@ -42,9 +42,18 @@ create trigger on_auth_user_created
 -- ============================================================
 -- EVENTS
 -- ============================================================
-create type event_visibility as enum ('public_link', 'link_invited_only', 'invited_only');
-create type event_status as enum ('active', 'archived', 'deleted');
-create type location_type as enum ('physical', 'virtual', 'both', 'tbd');
+do $$ begin
+  create type event_visibility as enum ('public_link', 'link_invited_only', 'invited_only');
+exception when duplicate_object then null;
+end $$;
+do $$ begin
+  create type event_status as enum ('active', 'archived', 'deleted');
+exception when duplicate_object then null;
+end $$;
+do $$ begin
+  create type location_type as enum ('physical', 'virtual', 'both', 'tbd');
+exception when duplicate_object then null;
+end $$;
 
 create table if not exists public.events (
   id uuid primary key default gen_random_uuid(),
@@ -92,7 +101,10 @@ create table if not exists public.event_cohosts (
 -- ============================================================
 -- GUESTS
 -- ============================================================
-create type rsvp_status as enum ('invited', 'going', 'maybe', 'not_going', 'no_response');
+do $$ begin
+  create type rsvp_status as enum ('invited', 'going', 'maybe', 'not_going', 'no_response');
+exception when duplicate_object then null;
+end $$;
 
 create table if not exists public.guests (
   id uuid primary key default gen_random_uuid(),
@@ -118,11 +130,17 @@ create index if not exists guests_token_idx on public.guests(invite_token);
 -- ============================================================
 -- EXPENSES
 -- ============================================================
-create type expense_category as enum (
-  'food', 'drinks', 'venue', 'decorations', 'supplies',
-  'entertainment', 'gifts', 'transportation', 'other'
-);
-create type payment_status as enum ('unpaid', 'paid', 'reimbursed');
+do $$ begin
+  create type expense_category as enum (
+    'food', 'drinks', 'venue', 'decorations', 'supplies',
+    'entertainment', 'gifts', 'transportation', 'other'
+  );
+exception when duplicate_object then null;
+end $$;
+do $$ begin
+  create type payment_status as enum ('unpaid', 'paid', 'reimbursed');
+exception when duplicate_object then null;
+end $$;
 
 create table if not exists public.expenses (
   id uuid primary key default gen_random_uuid(),
@@ -145,12 +163,18 @@ create index if not exists expenses_event_idx on public.expenses(event_id);
 -- ============================================================
 -- FOOD & SUPPLY ITEMS
 -- ============================================================
-create type food_category as enum (
-  'appetizers', 'main_dishes', 'sides', 'desserts', 'snacks',
-  'non_alcoholic_drinks', 'alcoholic_drinks', 'ice',
-  'plates_cups_cutlery', 'decorations', 'equipment', 'other_supplies'
-);
-create type food_status as enum ('needed', 'claimed', 'purchased', 'prepared', 'completed');
+do $$ begin
+  create type food_category as enum (
+    'appetizers', 'main_dishes', 'sides', 'desserts', 'snacks',
+    'non_alcoholic_drinks', 'alcoholic_drinks', 'ice',
+    'plates_cups_cutlery', 'decorations', 'equipment', 'other_supplies'
+  );
+exception when duplicate_object then null;
+end $$;
+do $$ begin
+  create type food_status as enum ('needed', 'claimed', 'purchased', 'prepared', 'completed');
+exception when duplicate_object then null;
+end $$;
 
 create table if not exists public.food_supply_items (
   id uuid primary key default gen_random_uuid(),
@@ -178,10 +202,22 @@ create index if not exists food_items_event_idx on public.food_supply_items(even
 -- ============================================================
 -- TASKS
 -- ============================================================
-create type assignee_type as enum ('host', 'cohost', 'guest', 'unassigned');
-create type task_priority as enum ('low', 'medium', 'high');
-create type task_status as enum ('not_started', 'in_progress', 'blocked', 'done');
-create type task_visibility as enum ('host_only', 'assignee_visible', 'all_participants');
+do $$ begin
+  create type assignee_type as enum ('host', 'cohost', 'guest', 'unassigned');
+exception when duplicate_object then null;
+end $$;
+do $$ begin
+  create type task_priority as enum ('low', 'medium', 'high');
+exception when duplicate_object then null;
+end $$;
+do $$ begin
+  create type task_status as enum ('not_started', 'in_progress', 'blocked', 'done');
+exception when duplicate_object then null;
+end $$;
+do $$ begin
+  create type task_visibility as enum ('host_only', 'assignee_visible', 'all_participants');
+exception when duplicate_object then null;
+end $$;
 
 create table if not exists public.tasks (
   id uuid primary key default gen_random_uuid(),
@@ -206,16 +242,25 @@ create index if not exists tasks_event_idx on public.tasks(event_id);
 -- ============================================================
 -- MENU ITEMS (host-planned dishes — what they're cooking)
 -- ============================================================
-create type menu_course as enum (
-  'appetizer', 'main', 'side', 'dessert', 'drink', 'snack', 'other'
-);
-create type menu_status as enum (
-  'planning', 'shopping', 'prepping', 'cooking', 'ready'
-);
-create type dietary_tag as enum (
-  'vegetarian', 'vegan', 'gluten_free', 'dairy_free',
-  'nut_free', 'shellfish_free', 'halal', 'kosher', 'spicy'
-);
+do $$ begin
+  create type menu_course as enum (
+    'appetizer', 'main', 'side', 'dessert', 'drink', 'snack', 'other'
+  );
+exception when duplicate_object then null;
+end $$;
+do $$ begin
+  create type menu_status as enum (
+    'planning', 'shopping', 'prepping', 'cooking', 'ready'
+  );
+exception when duplicate_object then null;
+end $$;
+do $$ begin
+  create type dietary_tag as enum (
+    'vegetarian', 'vegan', 'gluten_free', 'dairy_free',
+    'nut_free', 'shellfish_free', 'halal', 'kosher', 'spicy'
+  );
+exception when duplicate_object then null;
+end $$;
 
 create table if not exists public.menu_items (
   id uuid primary key default gen_random_uuid(),

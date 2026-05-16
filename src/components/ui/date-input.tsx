@@ -28,7 +28,7 @@ export function DateInput({
   required,
   disabled,
   icon: Icon,
-  placeholder = "MM/DD/YYYY",
+  placeholder = "DD/MM/YYYY",
   className,
   pickerTitle,
 }: DateInputProps) {
@@ -131,7 +131,7 @@ export function DateInput({
       </div>
       {invalid && (
         <p className="text-xs text-terracotta-deep">
-          Use MM/DD/YYYY (e.g. 12/24/2026)
+          Use DD/MM/YYYY (e.g. 24/12/2026)
         </p>
       )}
       {Icon && (
@@ -174,11 +174,13 @@ export function parseDate(s: string): string | null {
   let m = trimmed.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
   if (m) return validateDate(+m[1], +m[2], +m[3]);
 
+  // DD/MM/YYYY (also accepts - and . separators)
   m = trimmed.match(/^(\d{1,2})[/\-.](\d{1,2})[/\-.](\d{4})$/);
-  if (m) return validateDate(+m[3], +m[1], +m[2]);
+  if (m) return validateDate(+m[3], +m[2], +m[1]);
 
+  // DD/MM/YY
   m = trimmed.match(/^(\d{1,2})[/\-.](\d{1,2})[/\-.](\d{2})$/);
-  if (m) return validateDate(2000 + +m[3], +m[1], +m[2]);
+  if (m) return validateDate(2000 + +m[3], +m[2], +m[1]);
 
   const fallback = new Date(trimmed);
   if (
@@ -198,5 +200,5 @@ export function parseDate(s: string): string | null {
 export function formatDate(iso: string): string {
   const m = iso.match(/^(\d{4})-(\d{2})-(\d{2})$/);
   if (!m) return iso;
-  return `${m[2]}/${m[3]}/${m[1]}`;
+  return `${m[3]}/${m[2]}/${m[1]}`;
 }
