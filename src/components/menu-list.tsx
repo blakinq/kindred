@@ -485,7 +485,7 @@ export function MenuList({
                             }
                             options={STATUS_OPTIONS}
                             size="sm"
-                            className="w-28"
+                            className="w-36"
                             aria-label={`Status for ${it.name}`}
                           />
                         </div>
